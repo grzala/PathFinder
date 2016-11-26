@@ -49,8 +49,8 @@ public class Navigator {
         for (Point p : goals) 
             cps.add(new ColoredPoint(p, Color.BLUE));
         
-        for (Point p : obstacles)
-            cps.add(new ColoredPoint(p, Color.BLACK));
+        //for (Point p : obstacles)
+        //    cps.add(new ColoredPoint(p, Color.BLACK));
         
         for (ArrayList<Point> path : paths) 
             for (Point p : path)
@@ -79,7 +79,7 @@ public class Navigator {
   
     public void performSearch() {
         Rectangle bounds = new Rectangle(oc.originX, oc.originY, oc.width, oc.height);
-        AStar astar = new AStar(start, goals.get(0), obstacles, bounds, 5);
+        AStar astar = new AStar(start, goals.get(0), obstacles, bounds, 7);
         
         ArrayList<Point> path;
         path = astar.performSearch();

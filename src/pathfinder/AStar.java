@@ -70,7 +70,6 @@ public class AStar {
                     cameFrom.put(next, current);
                 }
             }
-            //path.add(current);
         }
         
         Point p = goal;
@@ -96,41 +95,61 @@ public class AStar {
         return distance;
     }
     
-    private ArrayList<Point> getNext(Point current) {
+    private ArrayList<Point> getNext(Point current) { //not a good idea tho
         ArrayList<Point> toret = new ArrayList<>();
         
-        if (!(current.x - cellsize <= minx)) 
-            toret.add(new Point(current.x - cellsize, current.y));
+        Point W = new Point(current.x - cellsize, current.y);
+        Point E = new Point(current.x + cellsize, current.y);
+        Point S = new Point(current.x, current.y - cellsize);
+        Point N = new Point(current.x, current.y + cellsize);
+        boolean Woccupied = false, Eoccupied = false, Soccupied = false, Noccupied = false;
         
-        if (!(current.x + cellsize >= maxx)) 
-            toret.add(new Point(current.x + cellsize, current.y));
+        Point WS = new Point(current.x - cellsize, current.y - cellsize);
+        Point ES = new Point(current.x + cellsize, current.y - cellsize);
+        Point WN = new Point(current.x - cellsize, current.y + cellsize);
+        Point EN = new Point(current.x + cellsize, current.y + cellsize);
+        boolean WSoccupied = false, ESoccupied = false, WNoccupied = false, ENoccupied = false;
         
-        if (!(current.y - cellsize <= miny)) 
-            toret.add(new Point(current.x, current.y - cellsize));
-        
-        if (!(current.y + cellsize >= maxx))
-            toret.add(new Point(current.x, current.y + cellsize));
-        
-        //exclude occupied
-        ArrayList<Point> n = new ArrayList<>();
-        for (Point p : toret){
-            boolean add = true;
-            Rectangle rect = new Rectangle();
-            rect.x = p.x - cellsize/2; rect.y = p.y - cellsize/2;
-            rect.width = cellsize; rect.height = cellsize;
-            for (Point obstacle : obstacles) {
-                if (rect.contains(obstacle)) {
-                    add = false;
-                    break;
-                }
-            }
-            if (add) 
-                n.add(p);
+        for (Point o : obstacles) {
+            Rectangle Wrect = getRect(W, cellsize); Rectangle Erect = getRect(E, cellsize);
+            Rectangle Srect = getRect(S, cellsize); Rectangle Nrect = getRect(N, cellsize);
+            Rectangle WSrect = getRect(WS, cellsize); Rectangle ESrect = getRect(ES, cellsize);
+            Rectangle WNrect = getRect(WN, cellsize); Rectangle ENrect = getRect(EN, cellsize);
+            
+            if (Wrect.contains(o)) Woccupied = true; if (Erect.contains(o)) Eoccupied = true;
+            if (Srect.contains(o)) Soccupied = true; if (Nrect.contains(o)) Noccupied = true;
+            if (WSrect.contains(o)) WSoccupied = true; if (ESrect.contains(o)) ESoccupied = true;
+            if (WNrect.contains(o)) WNoccupied = true; if (ENrect.contains(o)) ENoccupied = true;
+            
+            if (Woccupied && Eoccupied && Soccupied && Noccupied &&
+                WSoccupied && WNoccupied && ESoccupied && ENoccupied)
+                break;   
         }
         
-        toret = n;
+        if (!(current.x - cellsize <= minx) && !Woccupied)
+            toret.add(W);
+        if (!(current.x + cellsize >= maxx) && !Eoccupied)
+            toret.add(E);
+        if (!(current.y - cellsize <= miny) && !Soccupied)
+            toret.add(S);
+        if (!(current.y + cellsize >= maxy) && !Noccupied)
+            toret.add(N);
+        
+        //can cut corners?
+        if (!(current.y - cellsize <= minx) && !(current.y - cellsize <= miny) && !WSoccupied && !Woccupied && !Soccupied)
+            toret.add(WS);
+        if (!(current.y - cellsize <= minx) && !(current.y + cellsize >= minx) && !WNoccupied && !Woccupied && !Noccupied)
+            toret.add(WN);
+        if (!(current.y + cellsize >= maxx) && !(current.y - cellsize <= miny) && !ESoccupied && !Eoccupied && !Soccupied)
+            toret.add(ES);
+        if (!(current.y + cellsize >- maxx) && !(current.y + cellsize <= maxy) && !WNoccupied && !Eoccupied && !Noccupied)
+            toret.add(WN);
         
         return toret;
+    }
+    
+    private Rectangle getRect(Point center, int size) { // just INT, make own rect
+        return new Rectangle(center.x - size/2, center.y - size/2, size, size);
     }
     
     private class PrioritisedPoint {

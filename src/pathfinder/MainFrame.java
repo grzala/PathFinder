@@ -136,7 +136,6 @@ public class MainFrame extends javax.swing.JFrame {
     private void searchButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchButtonActionPerformed
         n.performSearch();
         canvas.repaint();
-        System.out.println("CLICKED");
     }//GEN-LAST:event_searchButtonActionPerformed
 
     public void createAndShowGUI() {

@@ -37,7 +37,6 @@ class OccupancyGrid {
     private void interpretImg(String path) throws IOException {
         BufferedImage img = ImageIO.read(new File(path));
         
-        System.out.println("Height: "+img.getHeight()+" Width: "+img.getWidth());
         int w = img.getWidth(); int h = img.getHeight();
         this.width = w; this.height = h;
         
