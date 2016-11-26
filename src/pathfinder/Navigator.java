@@ -74,15 +74,12 @@ public class Navigator {
     public void setImage(String path) {
         this.oc = new OccupancyGrid(path, imgres);
         
-        int x = oc.originX; int y = oc.originY;
-        
-        //for debug
-        //obsctacles = new ArrayList<>(oc.getAsPoints());
+        obstacles = new ArrayList<>(oc.getAsPoints());
     }
-    
+  
     public void performSearch() {
         Rectangle bounds = new Rectangle(oc.originX, oc.originY, oc.width, oc.height);
-        AStar astar = new AStar(start, goals.get(0), obstacles, bounds, imgres);
+        AStar astar = new AStar(start, goals.get(0), obstacles, bounds, 5);
         
         ArrayList<Point> path;
         path = astar.performSearch();

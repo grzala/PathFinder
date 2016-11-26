@@ -70,24 +70,21 @@ public class AStar {
                     cameFrom.put(next, current);
                 }
             }
+            //path.add(current);
         }
         
-        Point p = cameFrom.get(goal);
-        if (p == null)
-            return path; // no path
-        
-        path.add(goal);
-        while (p.x != start.x && p.y != start.y) {
+        Point p = goal;
+        while (p != null) {
             path.add(p);
             p = cameFrom.get(p);
         }
         path.add(start);
-        /*
+        
         ArrayList<Point> reverse = new ArrayList<>();
         for (int i = path.size()-1; i >= 0; i--) {
             reverse.add(path.get(i));
         }
-        path = reverse;*/
+        path = reverse;
         
         return path;
     }
@@ -114,6 +111,7 @@ public class AStar {
         if (!(current.y + cellsize >= maxx))
             toret.add(new Point(current.x, current.y + cellsize));
         
+        //exclude occupied
         ArrayList<Point> n = new ArrayList<>();
         for (Point p : toret){
             boolean add = true;
