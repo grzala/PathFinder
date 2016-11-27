@@ -27,17 +27,20 @@ import javax.swing.SwingUtilities;
  */
 public class Canvas extends javax.swing.JPanel {
 
-    /**
-     * Creates new form Canvas
-     */
+    public static enum Mode {
+        PAN,
+        SETSTART,
+        SETGOAL,
+    }
     
-    int x, y;
+    Point origin, mousept;
     
     private Navigator n;
     private BufferedImage background;
     
     private int pointsize = 5;
    
+    private Mode mode;
     
     public Canvas() {
         initComponents();
@@ -45,7 +48,12 @@ public class Canvas extends javax.swing.JPanel {
         n = new Navigator(); // unused but prevents null exception
         background = null;
         
-        x = 0; y = 0;
+        origin  = new Point();
+        mousept = new Point();
+    }
+    
+    public void setMode(Mode m) {
+        mode = m;
     }
     
     public void setNavigator(Navigator n) {
@@ -70,19 +78,19 @@ public class Canvas extends javax.swing.JPanel {
         
         //image
         if (background != null) {
-            g2d.drawImage(background, 0, 0, this);
+            g2d.drawImage(background, origin.x, origin.y, this);
         }
         
         //start
         g2d.setColor(Color.RED);
         Point start = n.getStart();
-        g2d.fillOval(start.x-(pointsize/2), start.y-(pointsize/2), pointsize, pointsize);
+        g2d.fillOval(origin.x + (start.x-(pointsize/2)), origin.y + (start.y-(pointsize/2)), pointsize, pointsize);
         
         //goals
         for(Point p : n.getGoals()) {
             g2d.setColor(Color.BLUE);
             int r = pointsize;
-            g2d.fillOval(p.x-(r/2), p.y-(r/2), r, r);
+            g2d.fillOval(origin.x + (p.x-(r/2)), origin.y + (p.y-(r/2)), r, r);
         }
        
         //paths
@@ -93,13 +101,14 @@ public class Canvas extends javax.swing.JPanel {
             for (int i = 0; i < line.size()-1; i++) {
                 Point p1 = line.get(i);
                 Point p2 = line.get(i+1);
-                g2d.drawLine(p1.x, p1.y, p2.x, p2.y);
+                g2d.drawLine(origin.x + p1.x, origin.y + p1.y, origin.x + p2.x, origin.y + p2.y);
             }
         }
         
         Dimension d = getSize();
         g2d.setColor(Color.RED);
-        g2d.drawRect(0, 0, d.width-1, d.height-1);
+        int w = n.getSize()[0]; int h = n.getSize()[1];
+        g2d.drawRect(origin.x, origin.y, w-1, h-1);
         
     }
 
@@ -114,7 +123,15 @@ public class Canvas extends javax.swing.JPanel {
     private void initComponents() {
 
         setBackground(new java.awt.Color(255, 255, 255));
+        addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
+            public void mouseDragged(java.awt.event.MouseEvent evt) {
+                formMouseDragged(evt);
+            }
+        });
         addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                formMousePressed(evt);
+            }
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 formMouseClicked(evt);
             }
@@ -133,14 +150,32 @@ public class Canvas extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void formMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMouseClicked
+        /*
         if(SwingUtilities.isLeftMouseButton(evt)) {
             n.setStart(evt.getX(), evt.getY());
         } else if(SwingUtilities.isRightMouseButton(evt)) {
             n.addGoal(evt.getX(), evt.getY());
-        }
+        } */
+        
+        if (mode == Mode.SETSTART) 
+            n.setStart(evt.getX() - origin.x, evt.getY() - origin.y);
         
         repaint();
     }//GEN-LAST:event_formMouseClicked
+
+    private void formMouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMouseDragged
+        if (mode == Mode.PAN) {
+            int dx = evt.getX() - mousept.x;
+            int dy = evt.getY() - mousept.y;
+            origin.setLocation(origin.x + dx, origin.y + dy);
+            mousept = evt.getPoint();
+        }
+        repaint();
+    }//GEN-LAST:event_formMouseDragged
+
+    private void formMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMousePressed
+        mousept = evt.getPoint();
+    }//GEN-LAST:event_formMousePressed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

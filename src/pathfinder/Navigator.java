@@ -8,6 +8,7 @@ package pathfinder;
 import java.awt.Color;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -88,6 +89,14 @@ public class Navigator {
         ArrayList<Point> path;
         path = astar.performSearch();
         paths.add(path);
+    }
+    
+    public int[] getSize() {
+        if (oc == null) 
+            return new int[]{0, 0};
+            
+        int[] ar = {oc.width, oc.height};
+        return ar;
     }
     
 }

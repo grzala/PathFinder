@@ -10,6 +10,7 @@ import java.awt.GraphicsEnvironment;
 import java.awt.Rectangle;
 import java.awt.image.BufferStrategy;
 import java.util.ArrayList;
+import javax.swing.ButtonGroup;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
@@ -22,13 +23,21 @@ public class MainFrame extends javax.swing.JFrame {
     /**
      * Creates new form MainFrame
      */
-    Navigator n;
+    private Navigator n;
+    
+    private ButtonGroup canvasMode;
     
     public MainFrame(Navigator n) {
         initComponents();
         canvas.setNavigator(n);
-        
         this.n = n;
+        
+        
+        canvasMode = new ButtonGroup();
+        canvasMode.add(setStartButton);
+        canvasMode.add(panButton);
+        
+        canvas.setMode(Canvas.Mode.PAN);
     }
 
     /**
@@ -44,6 +53,8 @@ public class MainFrame extends javax.swing.JFrame {
         fileChooseButton = new javax.swing.JButton();
         canvas = new pathfinder.Canvas();
         searchButton = new javax.swing.JButton();
+        panButton = new javax.swing.JToggleButton();
+        setStartButton = new javax.swing.JToggleButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("PathFInder");
@@ -83,6 +94,21 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
 
+        panButton.setSelected(true);
+        panButton.setText("pan");
+        panButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                panButtonActionPerformed(evt);
+            }
+        });
+
+        setStartButton.setText("set start");
+        setStartButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                setStartButtonActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -97,7 +123,11 @@ public class MainFrame extends javax.swing.JFrame {
                         .addComponent(fileChooseButton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(searchButton)
-                        .addGap(0, 469, Short.MAX_VALUE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(panButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(setStartButton)
+                        .addGap(0, 358, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -107,7 +137,9 @@ public class MainFrame extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(clearButton)
                     .addComponent(fileChooseButton)
-                    .addComponent(searchButton))
+                    .addComponent(searchButton)
+                    .addComponent(panButton)
+                    .addComponent(setStartButton))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(canvas, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
@@ -138,6 +170,14 @@ public class MainFrame extends javax.swing.JFrame {
         canvas.repaint();
     }//GEN-LAST:event_searchButtonActionPerformed
 
+    private void panButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_panButtonActionPerformed
+        canvas.setMode(Canvas.Mode.PAN);
+    }//GEN-LAST:event_panButtonActionPerformed
+
+    private void setStartButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_setStartButtonActionPerformed
+        canvas.setMode(Canvas.Mode.SETSTART);
+    }//GEN-LAST:event_setStartButtonActionPerformed
+
     public void createAndShowGUI() {
         setVisible(true);
         setLocation(100, 100);
@@ -159,6 +199,8 @@ public class MainFrame extends javax.swing.JFrame {
     private pathfinder.Canvas canvas;
     private javax.swing.JButton clearButton;
     private javax.swing.JButton fileChooseButton;
+    private javax.swing.JToggleButton panButton;
     private javax.swing.JButton searchButton;
+    private javax.swing.JToggleButton setStartButton;
     // End of variables declaration//GEN-END:variables
 }
