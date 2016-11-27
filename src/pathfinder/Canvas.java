@@ -35,6 +35,8 @@ public class Canvas extends javax.swing.JPanel {
     
     private Navigator n;
     private BufferedImage background;
+    
+    private int pointsize = 5;
    
     
     public Canvas() {
@@ -62,25 +64,37 @@ public class Canvas extends javax.swing.JPanel {
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
-        /*
-        for(Rectangle r : rectangles) {
-            g.drawRect(r.x, r.y, r.width, r.height);
-        }*/
-        
-        ArrayList<ColoredPoint> points = new ArrayList<>();
-        points = n.getPoints();
         
         Graphics2D g2d = (Graphics2D) g;
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON); 
         
+        //image
         if (background != null) {
             g2d.drawImage(background, 0, 0, this);
         }
         
-        for(ColoredPoint p : points) {
-            g2d.setColor(p.color);
-            int r = p.size;
+        //start
+        g2d.setColor(Color.RED);
+        Point start = n.getStart();
+        g2d.fillOval(start.x-(pointsize/2), start.y-(pointsize/2), pointsize, pointsize);
+        
+        //goals
+        for(Point p : n.getGoals()) {
+            g2d.setColor(Color.BLUE);
+            int r = pointsize;
             g2d.fillOval(p.x-(r/2), p.y-(r/2), r, r);
+        }
+       
+        //paths
+        ArrayList<ArrayList<Point>> lines = n.getLines();
+        
+        for (ArrayList<Point> line : lines) {
+            System.out.println("LINESIZE: "+line.size());
+            for (int i = 0; i < line.size()-1; i++) {
+                Point p1 = line.get(i);
+                Point p2 = line.get(i+1);
+                g2d.drawLine(p1.x, p1.y, p2.x, p2.y);
+            }
         }
         
         Dimension d = getSize();

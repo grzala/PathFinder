@@ -77,7 +77,7 @@ public class AStar {
             path.add(p);
             p = cameFrom.get(p);
         }
-        path.add(start);
+        //path.add(start);
         
         ArrayList<Point> reverse = new ArrayList<>();
         for (int i = path.size()-1; i >= 0; i--) {

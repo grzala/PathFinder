@@ -41,34 +41,38 @@ public class Navigator {
         
     }
     
-    public ArrayList<ColoredPoint> getPoints() {
-        ArrayList<ColoredPoint> cps = new ArrayList<>();
+    public ArrayList<ArrayList<Point>> getLines() {
+        ArrayList<ArrayList<Point>> ls = new ArrayList<>();
         
-        cps.add(new ColoredPoint(start, Color.RED));
-        
-        for (Point p : goals) 
-            cps.add(new ColoredPoint(p, Color.BLUE));
-        
-        //for (Point p : obstacles)
-        //    cps.add(new ColoredPoint(p, Color.BLACK));
-        
-        for (ArrayList<Point> path : paths) 
+        for (ArrayList<Point> path : paths) {
+            ArrayList<Point> ps = new ArrayList<>();
             for (Point p : path)
-                cps.add(new ColoredPoint(p, Color.GREEN));
+                ps.add(p);
+            ls.add(ps);
+        }
         
-        return cps;
+        return ls;
     }
     
     public void setStart(int x, int y) {
         start = new Point(x, y);
     }    
     
+    public Point getStart() {
+        return start;
+    }
+    
     public void clearGoals() {
         goals.clear();
+        paths.clear(); ///////////////////////////////
     }
     
     public void addGoal(int x, int y) {
         goals.add(new Point(x, y));
+    }
+    
+    public ArrayList<Point> getGoals() {
+        return goals;
     }
     
     public void setImage(String path) {
@@ -79,7 +83,7 @@ public class Navigator {
   
     public void performSearch() {
         Rectangle bounds = new Rectangle(oc.originX, oc.originY, oc.width, oc.height);
-        AStar astar = new AStar(start, goals.get(0), obstacles, bounds, 7);
+        AStar astar = new AStar(start, goals.get(0), obstacles, bounds, 6);
         
         ArrayList<Point> path;
         path = astar.performSearch();
