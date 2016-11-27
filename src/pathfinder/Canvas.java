@@ -97,7 +97,6 @@ public class Canvas extends javax.swing.JPanel {
         ArrayList<ArrayList<Point>> lines = n.getLines();
         
         for (ArrayList<Point> line : lines) {
-            System.out.println("LINESIZE: "+line.size());
             for (int i = 0; i < line.size()-1; i++) {
                 Point p1 = line.get(i);
                 Point p2 = line.get(i+1);
@@ -159,6 +158,14 @@ public class Canvas extends javax.swing.JPanel {
         
         if (mode == Mode.SETSTART) 
             n.setStart(evt.getX() - origin.x, evt.getY() - origin.y);
+        
+        if (mode == Mode.SETGOAL) {
+            if(SwingUtilities.isLeftMouseButton(evt)) {
+                n.addGoal(evt.getX() - origin.x, evt.getY() - origin.y);
+            } else if(SwingUtilities.isRightMouseButton(evt)) {
+                n.removeLastGoal();
+            } 
+        }
         
         repaint();
     }//GEN-LAST:event_formMouseClicked

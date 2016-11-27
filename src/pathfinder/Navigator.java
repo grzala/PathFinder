@@ -72,6 +72,12 @@ public class Navigator {
         goals.add(new Point(x, y));
     }
     
+    public void removeLastGoal() {
+        if (goals.size() > 0) {
+            goals.remove(goals.size()-1);
+        }
+    }
+    
     public ArrayList<Point> getGoals() {
         return goals;
     }

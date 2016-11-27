@@ -5,11 +5,6 @@
  */
 package pathfinder;
 
-import java.awt.Graphics;
-import java.awt.GraphicsEnvironment;
-import java.awt.Rectangle;
-import java.awt.image.BufferStrategy;
-import java.util.ArrayList;
 import javax.swing.ButtonGroup;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -23,9 +18,9 @@ public class MainFrame extends javax.swing.JFrame {
     /**
      * Creates new form MainFrame
      */
-    private Navigator n;
+    private final Navigator n;
     
-    private ButtonGroup canvasMode;
+    private final ButtonGroup canvasMode;
     
     public MainFrame(Navigator n) {
         initComponents();
@@ -36,6 +31,7 @@ public class MainFrame extends javax.swing.JFrame {
         canvasMode = new ButtonGroup();
         canvasMode.add(setStartButton);
         canvasMode.add(panButton);
+        canvasMode.add(setGoalButton);
         
         canvas.setMode(Canvas.Mode.PAN);
     }
@@ -49,17 +45,24 @@ public class MainFrame extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jPanel1 = new javax.swing.JPanel();
+        jPanel3 = new javax.swing.JPanel();
         clearButton = new javax.swing.JButton();
         fileChooseButton = new javax.swing.JButton();
-        canvas = new pathfinder.Canvas();
         searchButton = new javax.swing.JButton();
         panButton = new javax.swing.JToggleButton();
         setStartButton = new javax.swing.JToggleButton();
+        setGoalButton = new javax.swing.JToggleButton();
+        jPanel4 = new javax.swing.JPanel();
+        jPanel2 = new javax.swing.JPanel();
+        canvas = new pathfinder.Canvas();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("PathFInder");
         setFocusable(false);
         setName("MainFrame"); // NOI18N
+
+        jPanel1.setLayout(new javax.swing.BoxLayout(jPanel1, javax.swing.BoxLayout.Y_AXIS));
 
         clearButton.setText("clear");
         clearButton.addActionListener(new java.awt.event.ActionListener() {
@@ -67,6 +70,7 @@ public class MainFrame extends javax.swing.JFrame {
                 clearButtonActionPerformed(evt);
             }
         });
+        jPanel3.add(clearButton);
 
         fileChooseButton.setText("File");
         fileChooseButton.setActionCommand("filechoose");
@@ -75,6 +79,59 @@ public class MainFrame extends javax.swing.JFrame {
                 fileChooseButtonActionPerformed(evt);
             }
         });
+        jPanel3.add(fileChooseButton);
+
+        searchButton.setText("search");
+        searchButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                searchButtonActionPerformed(evt);
+            }
+        });
+        jPanel3.add(searchButton);
+
+        panButton.setSelected(true);
+        panButton.setText("pan");
+        panButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                panButtonActionPerformed(evt);
+            }
+        });
+        jPanel3.add(panButton);
+
+        setStartButton.setText("set start");
+        setStartButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                setStartButtonActionPerformed(evt);
+            }
+        });
+        jPanel3.add(setStartButton);
+
+        setGoalButton.setText("set goal");
+        setGoalButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                setGoalButtonActionPerformed(evt);
+            }
+        });
+        jPanel3.add(setGoalButton);
+
+        jPanel1.add(jPanel3);
+
+        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
+        jPanel4.setLayout(jPanel4Layout);
+        jPanel4Layout.setHorizontalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 640, Short.MAX_VALUE)
+        );
+        jPanel4Layout.setVerticalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 37, Short.MAX_VALUE)
+        );
+
+        jPanel1.add(jPanel4);
+
+        getContentPane().add(jPanel1, java.awt.BorderLayout.PAGE_START);
+
+        jPanel2.setLayout(new javax.swing.BoxLayout(jPanel2, javax.swing.BoxLayout.LINE_AXIS));
 
         javax.swing.GroupLayout canvasLayout = new javax.swing.GroupLayout(canvas);
         canvas.setLayout(canvasLayout);
@@ -84,66 +141,12 @@ public class MainFrame extends javax.swing.JFrame {
         );
         canvasLayout.setVerticalGroup(
             canvasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 420, Short.MAX_VALUE)
+            .addGap(0, 380, Short.MAX_VALUE)
         );
 
-        searchButton.setText("search");
-        searchButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                searchButtonActionPerformed(evt);
-            }
-        });
+        jPanel2.add(canvas);
 
-        panButton.setSelected(true);
-        panButton.setText("pan");
-        panButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                panButtonActionPerformed(evt);
-            }
-        });
-
-        setStartButton.setText("set start");
-        setStartButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                setStartButtonActionPerformed(evt);
-            }
-        });
-
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(canvas, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(clearButton)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(fileChooseButton)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(searchButton)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(panButton)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(setStartButton)
-                        .addGap(0, 358, Short.MAX_VALUE)))
-                .addContainerGap())
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(clearButton)
-                    .addComponent(fileChooseButton)
-                    .addComponent(searchButton)
-                    .addComponent(panButton)
-                    .addComponent(setStartButton))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(canvas, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
-        );
+        getContentPane().add(jPanel2, java.awt.BorderLayout.CENTER);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -178,6 +181,10 @@ public class MainFrame extends javax.swing.JFrame {
         canvas.setMode(Canvas.Mode.SETSTART);
     }//GEN-LAST:event_setStartButtonActionPerformed
 
+    private void setGoalButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_setGoalButtonActionPerformed
+        canvas.setMode(Canvas.Mode.SETGOAL);
+    }//GEN-LAST:event_setGoalButtonActionPerformed
+
     public void createAndShowGUI() {
         setVisible(true);
         setLocation(100, 100);
@@ -199,8 +206,13 @@ public class MainFrame extends javax.swing.JFrame {
     private pathfinder.Canvas canvas;
     private javax.swing.JButton clearButton;
     private javax.swing.JButton fileChooseButton;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel jPanel4;
     private javax.swing.JToggleButton panButton;
     private javax.swing.JButton searchButton;
+    private javax.swing.JToggleButton setGoalButton;
     private javax.swing.JToggleButton setStartButton;
     // End of variables declaration//GEN-END:variables
 }
