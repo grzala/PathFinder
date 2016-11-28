@@ -5,6 +5,8 @@
         <group>
             <file>file:/home/grzala/Desktop/PathFinder/src/pathfinder/Navigator.java</file>
             <file>file:/home/grzala/Desktop/PathFinder/src/pathfinder/Canvas.java</file>
+            <file>file:/home/grzala/Desktop/PathFinder/src/pathfinder/Dijkstra.java</file>
+            <file>file:/home/grzala/Desktop/PathFinder/src/pathfinder/OccupancyGrid.java</file>
             <file>file:/home/grzala/Desktop/PathFinder/src/pathfinder/AStar.java</file>
             <file>file:/home/grzala/Desktop/PathFinder/src/pathfinder/MainFrame.java</file>
             <file>file:/home/grzala/Desktop/PathFinder/src/pathfinder/PathFinder.java</file>

@@ -89,12 +89,14 @@ public class Navigator {
     }
   
     public void performSearch() {
-        Rectangle bounds = new Rectangle(oc.originX, oc.originY, oc.width, oc.height);
-        AStar astar = new AStar(start, goals.get(0), obstacles, bounds, 6);
         
-        ArrayList<Point> path;
-        path = astar.performSearch();
-        paths.add(path);
+        //AStar astar = new AStar(start, goals.get(0), obstacles, 6);
+        
+        //ArrayList<Point> path;
+        //path = astar.performSearch();
+        //paths.add(path);
+        Dijkstra d = new Dijkstra(start, goals, obstacles, 6.f);
+        paths = d.performSearch();
     }
     
     public int[] getSize() {

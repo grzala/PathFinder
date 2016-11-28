@@ -5,6 +5,7 @@
  */
 package pathfinder;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -42,6 +43,8 @@ public class Canvas extends javax.swing.JPanel {
    
     private Mode mode;
     
+    private Color[] pathColors;
+    
     public Canvas() {
         initComponents();
         setIgnoreRepaint(true);
@@ -50,6 +53,11 @@ public class Canvas extends javax.swing.JPanel {
         
         origin  = new Point();
         mousept = new Point();
+        pathColors = new Color[] {
+            new Color(180, 60, 240), //purple
+            new Color(20, 150, 0), //green
+            new Color(90, 20, 5), //brown
+        };
     }
     
     public void setMode(Mode m) {
@@ -96,13 +104,20 @@ public class Canvas extends javax.swing.JPanel {
         //paths
         ArrayList<ArrayList<Point>> lines = n.getLines();
         
+        int colorIndex = 0;
+        //g2d.setStroke(new BasicStroke(2));
         for (ArrayList<Point> line : lines) {
+            g2d.setColor(pathColors[colorIndex++]);
+            if (colorIndex >= pathColors.length) colorIndex = 0;
+            
             for (int i = 0; i < line.size()-1; i++) {
                 Point p1 = line.get(i);
                 Point p2 = line.get(i+1);
                 g2d.drawLine(origin.x + p1.x, origin.y + p1.y, origin.x + p2.x, origin.y + p2.y);
             }
         }
+        //g2d.setStroke(new BasicStroke(1));
+        
         
         Dimension d = getSize();
         g2d.setColor(Color.RED);
@@ -149,13 +164,6 @@ public class Canvas extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void formMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMouseClicked
-        /*
-        if(SwingUtilities.isLeftMouseButton(evt)) {
-            n.setStart(evt.getX(), evt.getY());
-        } else if(SwingUtilities.isRightMouseButton(evt)) {
-            n.addGoal(evt.getX(), evt.getY());
-        } */
-        
         if (mode == Mode.SETSTART) 
             n.setStart(evt.getX() - origin.x, evt.getY() - origin.y);
         

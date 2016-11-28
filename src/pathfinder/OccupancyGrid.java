@@ -73,6 +73,16 @@ class OccupancyGrid {
                 break;
         }
         
+        //create map bounds
+        for (int i = originX; i < originX + width; i++) {
+            toret.add(new Point(i, originY));
+            toret.add(new Point(i, originY + height));
+        }
+        for (int i = originY; i < originY + height; i++) {
+            toret.add(new Point(originX, i));
+            toret.add(new Point(originX + width, i));
+        }
+        
         return toret;
     }
     

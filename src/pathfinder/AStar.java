@@ -23,17 +23,24 @@ public class AStar {
     Point goal;
     
     ArrayList<Point> obstacles;
+    ArrayList<Point> path;
+    float cost;
     
-    int cellsize, minx, maxx, miny, maxy;
+    int cellsize;
     
-    public AStar(Point start, Point goal, ArrayList<Point> obstacles, Rectangle bounds, int cellsize) {
+    public AStar(Point start, Point goal, ArrayList<Point> obstacles, int cellsize) {
         this.start = start;
         this.goal = goal;
         this.obstacles = obstacles;
         this.cellsize = cellsize;   
-        
-        minx = bounds.x; miny = bounds.y; 
-        maxx = minx + bounds.width; maxy = miny + bounds.height;
+    }
+    
+    public ArrayList<Point> getPath() {
+        return path;
+    }
+    
+    public float getCost() {
+        return cost;
     }
     
     public ArrayList<Point> performSearch() {
@@ -55,8 +62,11 @@ public class AStar {
             Point current = head.poll().toPoint();
             
             if (goalRect.contains(current)) {//goal reached
-                if (current != goal) 
+                if (current != goal) {
                     cameFrom.put(goal, current);
+                    float newCost = costSoFar.get(current) + dist(current, goal);
+                    costSoFar.put(goal, newCost);
+                }
                 break;
             }
                 
@@ -77,13 +87,17 @@ public class AStar {
             path.add(p);
             p = cameFrom.get(p);
         }
-        //path.add(start);
         
         ArrayList<Point> reverse = new ArrayList<>();
         for (int i = path.size()-1; i >= 0; i--) {
             reverse.add(path.get(i));
         }
         path = reverse;
+        
+        //Add remove points that are in line;
+        
+        this.path = path;
+        this.cost = costSoFar.get(goal);
         
         return path;
     }
@@ -126,23 +140,23 @@ public class AStar {
                 break;   
         }
         
-        if (!(current.x - cellsize <= minx) && !Woccupied)
+        if (!Woccupied)
             toret.add(W);
-        if (!(current.x + cellsize >= maxx) && !Eoccupied)
+        if (!Eoccupied)
             toret.add(E);
-        if (!(current.y - cellsize <= miny) && !Soccupied)
+        if (!Soccupied)
             toret.add(S);
-        if (!(current.y + cellsize >= maxy) && !Noccupied)
+        if (!Noccupied)
             toret.add(N);
         
         //can cut corners?
-        if (!(current.y - cellsize <= minx) && !(current.y - cellsize <= miny) && !WSoccupied && !Woccupied && !Soccupied)
+        if (!WSoccupied && !Woccupied && !Soccupied)
             toret.add(WS);
-        if (!(current.y - cellsize <= minx) && !(current.y + cellsize >= minx) && !WNoccupied && !Woccupied && !Noccupied)
+        if (!WNoccupied && !Woccupied && !Noccupied)
             toret.add(WN);
-        if (!(current.y + cellsize >= maxx) && !(current.y - cellsize <= miny) && !ESoccupied && !Eoccupied && !Soccupied)
+        if (!ESoccupied && !Eoccupied && !Soccupied)
             toret.add(ES);
-        if (!(current.y + cellsize >- maxx) && !(current.y + cellsize <= maxy) && !WNoccupied && !Eoccupied && !Noccupied)
+        if (!WNoccupied && !Eoccupied && !Noccupied)
             toret.add(WN);
         
         return toret;
