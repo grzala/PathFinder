@@ -32,7 +32,9 @@ public class AStar {
         this.start = start;
         this.goal = goal;
         this.obstacles = obstacles;
-        this.cellsize = cellsize;   
+        this.cellsize = cellsize;  
+        path = new ArrayList<>();
+        cost = Float.MAX_VALUE;
     }
     
     public ArrayList<Point> getPath() {
@@ -57,29 +59,41 @@ public class AStar {
         costSoFar.put(start, 0.0f);
         
         Rectangle goalRect = new Rectangle(goal.x - cellsize/2, goal.y - cellsize/2, cellsize, cellsize);
+        try {
+            while (head.size() > 0) {
+                Point current = head.poll().toPoint();
+
+                if (goalRect.contains(current)) {//goal reached
+                    if (current != goal) {
+                        current = cameFrom.get(current); //the current one is might make path longer
+                        cameFrom.put(goal, current);
+                        float newCost = costSoFar.get(current) + heur(current, goal);
+                        costSoFar.put(goal, newCost);
+
+                    }
+                    break;
+                }
+
+                for (Point next : getNext(current)) {
+                    float newCost = costSoFar.get(current) + heur(current, next);
+
+                    if (costSoFar.get(next) == null || newCost < costSoFar.get(next)) {
+                        costSoFar.put(next, newCost);
+                        float priority = newCost + heur(goal, next);
+                        head.add(new PrioritisedPoint(next, priority));
+                        cameFrom.put(next, current);
+                    }
+                }
+            }
+        } catch(OutOfMemoryError e) {
+            System.out.println("Out Of Memory");
+            e.printStackTrace();
+            return path;
+        } 
         
-        while (head.size() > 0) {
-            Point current = head.poll().toPoint();
-            
-            if (goalRect.contains(current)) {//goal reached
-                if (current != goal) {
-                    cameFrom.put(goal, current);
-                    float newCost = costSoFar.get(current) + dist(current, goal);
-                    costSoFar.put(goal, newCost);
-                }
-                break;
-            }
-                
-            for (Point next : getNext(current)) {
-                float newCost = costSoFar.get(current) + dist(current, next);
-                
-                if (costSoFar.get(next) == null || newCost < costSoFar.get(next)) {
-                    costSoFar.put(next, newCost);
-                    float priority = newCost + dist(goal, next);
-                    head.add(new PrioritisedPoint(next, priority));
-                    cameFrom.put(next, current);
-                }
-            }
+        if (cameFrom.get(goal) == null) { // no path
+            System.out.println("No path found");
+            return path;
         }
         
         Point p = goal;
@@ -102,11 +116,15 @@ public class AStar {
         return path;
     }
     
-    private float dist(Point p1, Point p2) {
-        int x1 = p1.x, x2 = p2.x;
-        int y1 = p1.y, y2 = p2.y;
-        float distance = (float)Math.sqrt((x1-x2)*(x1-x2) + (y1-y2)*(y1-y2));
-        return distance;
+    private float heur(Point p1, Point p2) {
+        
+        //diagonal heuristic
+        float D = 1; //normal cost
+        float D2 = (float)Math.sqrt(2); //diagonal cost same as normal//(float)Math.sqrt(2*(cellsize * cellsize));
+        
+        float dx = Math.abs(p1.x - p2.x);
+        float dy = Math.abs(p1.y - p2.y);
+        return D * (dx + dy) + (D2 - 2 * D) * Math.min(dx, dy);
     }
     
     private ArrayList<Point> getNext(Point current) { //not a good idea tho
@@ -156,8 +174,8 @@ public class AStar {
             toret.add(WN);
         if (!ESoccupied && !Eoccupied && !Soccupied)
             toret.add(ES);
-        if (!WNoccupied && !Eoccupied && !Noccupied)
-            toret.add(WN);
+        if (!ENoccupied && !Eoccupied && !Noccupied)
+            toret.add(EN);
         
         return toret;
     }

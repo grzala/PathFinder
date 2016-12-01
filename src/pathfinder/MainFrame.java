@@ -157,7 +157,7 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_clearButtonActionPerformed
 
     private void fileChooseButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fileChooseButtonActionPerformed
-        JFileChooser chooser = new JFileChooser();
+        JFileChooser chooser = new JFileChooser(".");
         FileNameExtensionFilter filter = new FileNameExtensionFilter("JPG & PNG Images", "jpg", "png");
         chooser.setFileFilter(filter);
         int returnVal = chooser.showOpenDialog(null);
@@ -166,6 +166,7 @@ public class MainFrame extends javax.swing.JFrame {
            canvas.setImage(chooser.getSelectedFile().getPath());
         }
         
+        n.clearGoals();
     }//GEN-LAST:event_fileChooseButtonActionPerformed
 
     private void searchButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchButtonActionPerformed

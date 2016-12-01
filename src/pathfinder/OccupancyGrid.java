@@ -46,7 +46,7 @@ class OccupancyGrid {
                 int  red   = (clr & 0x00ff0000) >> 16;
                 int  green = (clr & 0x0000ff00) >> 8;
                 int  blue  =  clr & 0x000000ff;
-                if (red < 255 && blue < 255 && green < 255) { //not white
+                if (red < 230 && blue < 230 && green < 230) { //not white
                     oc.add(true);
                 } else {
                     oc.add(false);

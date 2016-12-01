@@ -2,14 +2,6 @@
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-        <group>
-            <file>file:/home/grzala/Desktop/PathFinder/src/pathfinder/Navigator.java</file>
-            <file>file:/home/grzala/Desktop/PathFinder/src/pathfinder/Canvas.java</file>
-            <file>file:/home/grzala/Desktop/PathFinder/src/pathfinder/Dijkstra.java</file>
-            <file>file:/home/grzala/Desktop/PathFinder/src/pathfinder/OccupancyGrid.java</file>
-            <file>file:/home/grzala/Desktop/PathFinder/src/pathfinder/AStar.java</file>
-            <file>file:/home/grzala/Desktop/PathFinder/src/pathfinder/MainFrame.java</file>
-            <file>file:/home/grzala/Desktop/PathFinder/src/pathfinder/PathFinder.java</file>
-        </group>
+        <group/>
     </open-files>
 </project-private>

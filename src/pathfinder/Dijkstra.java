@@ -46,9 +46,6 @@ public class Dijkstra {
         nodesVisited.add(currentNode);
         //closest neighbour, rewrite it later
         while (!(nodesVisited.size() >= nodes.size())) {
-            float shortestPath = Float.MAX_VALUE;
-            Node targetNode = null;
-            
             //populate neighbours
             for (Node n : nodes) {
                 if (!(currentNode.equals(n)) && !(nodesVisited.contains(n))) {
@@ -59,12 +56,12 @@ public class Dijkstra {
             }
             
             Node newNode = currentNode.getClosestNeighbour();
-            paths.add(currentNode.getPathFor(newNode));
+            ArrayList<Point> p = currentNode.getPathFor(newNode);
+            if (p != null && p.size() > 0) //if path exists
+                paths.add(currentNode.getPathFor(newNode));
             currentNode = newNode;
             nodesVisited.add(currentNode);
-
         }
-        
         return paths;
     }
     

@@ -22,12 +22,11 @@ public class Navigator {
     
     private Point start;
     private ArrayList<Point> goals;
-    
     private ArrayList<Point> obstacles;
-    
     private ArrayList<ArrayList<Point>> paths;
     
     int imgres = 2; //pixels;
+    float step;
     
     public Navigator() {
         start = new Point();
@@ -40,6 +39,7 @@ public class Navigator {
         goals.add(new Point(140, 40));
         goals.add(new Point(250, 40));
         
+        step = 6.f;
     }
     
     public ArrayList<ArrayList<Point>> getLines() {
@@ -55,8 +55,26 @@ public class Navigator {
         return ls;
     }
     
-    public void setStart(int x, int y) {
-        start = new Point(x, y);
+    private boolean canAdd(int x, int y) {
+        boolean add = true;
+        for (Point o : obstacles) {
+            Rectangle rect = new Rectangle(x - (int)step, y - (int)step, (int)step, (int)step);
+            if (rect.contains(o)) {
+                add = false;
+                break;
+            }
+        }
+        return add;
+    }
+    
+    public boolean setStart(int x, int y) {
+        if (canAdd(x, y)) {
+            start = new Point(x, y);
+            return true;
+        } else { 
+            System.out.println("can't add start, to close to obstacle");
+            return false;
+        }
     }    
     
     public Point getStart() {
@@ -68,8 +86,14 @@ public class Navigator {
         paths.clear(); ///////////////////////////////
     }
     
-    public void addGoal(int x, int y) {
-        goals.add(new Point(x, y));
+    public boolean addGoal(int x, int y) {
+        if (canAdd(x, y)) {
+            goals.add(new Point(x, y));
+            return true;
+        } else {
+            System.out.println("Can't add goal: to close to an obstacle");
+            return false;
+        }
     }
     
     public void removeLastGoal() {
@@ -80,6 +104,11 @@ public class Navigator {
     
     public ArrayList<Point> getGoals() {
         return goals;
+        /* //debugging purposes
+        ArrayList<Point> r = new ArrayList<>(goals);
+        r.addAll(obstacles);
+        return r;
+        */
     }
     
     public void setImage(String path) {
@@ -95,7 +124,8 @@ public class Navigator {
         //ArrayList<Point> path;
         //path = astar.performSearch();
         //paths.add(path);
-        Dijkstra d = new Dijkstra(start, goals, obstacles, 6.f);
+        paths.clear();
+        Dijkstra d = new Dijkstra(start, goals, obstacles, step);
         paths = d.performSearch();
     }
     
