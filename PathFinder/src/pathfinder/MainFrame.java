@@ -5,7 +5,10 @@
  */
 package pathfinder;
 
+import java.awt.Toolkit;
+import java.net.URL;
 import javax.swing.ButtonGroup;
+import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.UIManager;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -24,17 +27,13 @@ public class MainFrame extends javax.swing.JFrame {
     private final ButtonGroup canvasMode;
     
     public MainFrame(Navigator n) {
-        
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        } catch (Exception e) {
-           // handle exception
-        }
+        } catch (Exception e) {}
         
         initComponents();
         canvas.setNavigator(n);
         this.n = n;
-        
         
         canvasMode = new ButtonGroup();
         canvasMode.add(setStartButton);
@@ -42,6 +41,10 @@ public class MainFrame extends javax.swing.JFrame {
         canvasMode.add(setGoalButton);
         
         canvas.setMode(Canvas.Mode.PAN);
+        
+        URL iconURL = getClass().getResource("/resources/icon.png");
+        ImageIcon icon = new ImageIcon(iconURL);
+        setIconImage(icon.getImage());
     }
 
     /**
@@ -66,8 +69,9 @@ public class MainFrame extends javax.swing.JFrame {
         canvas = new pathfinder.Canvas();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("PathFInder");
+        setTitle("PathFinder");
         setFocusable(false);
+        setIconImages(null);
         setName("MainFrame"); // NOI18N
 
         jPanel1.setLayout(new javax.swing.BoxLayout(jPanel1, javax.swing.BoxLayout.Y_AXIS));
@@ -155,6 +159,8 @@ public class MainFrame extends javax.swing.JFrame {
         jPanel2.add(canvas);
 
         getContentPane().add(jPanel2, java.awt.BorderLayout.CENTER);
+
+        getAccessibleContext().setAccessibleName("PathFinder");
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
