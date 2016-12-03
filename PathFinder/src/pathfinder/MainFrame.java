@@ -7,6 +7,7 @@ package pathfinder;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JFileChooser;
+import javax.swing.UIManager;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
@@ -23,6 +24,13 @@ public class MainFrame extends javax.swing.JFrame {
     private final ButtonGroup canvasMode;
     
     public MainFrame(Navigator n) {
+        
+        try {
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        } catch (Exception e) {
+           // handle exception
+        }
+        
         initComponents();
         canvas.setNavigator(n);
         this.n = n;
