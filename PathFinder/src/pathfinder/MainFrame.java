@@ -45,6 +45,8 @@ public class MainFrame extends javax.swing.JFrame {
         URL iconURL = getClass().getResource("/resources/icon.png");
         ImageIcon icon = new ImageIcon(iconURL);
         setIconImage(icon.getImage());
+        
+        canvas.requestFocus(true);
     }
 
     /**
@@ -77,6 +79,7 @@ public class MainFrame extends javax.swing.JFrame {
         jPanel1.setLayout(new javax.swing.BoxLayout(jPanel1, javax.swing.BoxLayout.Y_AXIS));
 
         clearButton.setText("clear");
+        clearButton.setFocusPainted(false);
         clearButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 clearButtonActionPerformed(evt);
@@ -86,6 +89,7 @@ public class MainFrame extends javax.swing.JFrame {
 
         fileChooseButton.setText("File");
         fileChooseButton.setActionCommand("filechoose");
+        fileChooseButton.setFocusPainted(false);
         fileChooseButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 fileChooseButtonActionPerformed(evt);
@@ -94,6 +98,7 @@ public class MainFrame extends javax.swing.JFrame {
         jPanel3.add(fileChooseButton);
 
         searchButton.setText("search");
+        searchButton.setFocusPainted(false);
         searchButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 searchButtonActionPerformed(evt);
@@ -103,6 +108,7 @@ public class MainFrame extends javax.swing.JFrame {
 
         panButton.setSelected(true);
         panButton.setText("pan");
+        panButton.setFocusPainted(false);
         panButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 panButtonActionPerformed(evt);
@@ -111,6 +117,7 @@ public class MainFrame extends javax.swing.JFrame {
         jPanel3.add(panButton);
 
         setStartButton.setText("set start");
+        setStartButton.setFocusPainted(false);
         setStartButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 setStartButtonActionPerformed(evt);
@@ -119,6 +126,7 @@ public class MainFrame extends javax.swing.JFrame {
         jPanel3.add(setStartButton);
 
         setGoalButton.setText("set goal");
+        setGoalButton.setFocusPainted(false);
         setGoalButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 setGoalButtonActionPerformed(evt);
@@ -153,20 +161,18 @@ public class MainFrame extends javax.swing.JFrame {
         );
         canvasLayout.setVerticalGroup(
             canvasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 380, Short.MAX_VALUE)
+            .addGap(0, 411, Short.MAX_VALUE)
         );
 
         jPanel2.add(canvas);
 
         getContentPane().add(jPanel2, java.awt.BorderLayout.CENTER);
 
-        getAccessibleContext().setAccessibleName("PathFinder");
-
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void clearButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clearButtonActionPerformed
-        n.clearGoals();
+        n.clear();
         canvas.repaint();
     }//GEN-LAST:event_clearButtonActionPerformed
 
@@ -180,7 +186,7 @@ public class MainFrame extends javax.swing.JFrame {
            canvas.setImage(chooser.getSelectedFile().getPath());
         }
         
-        n.clearGoals();
+        n.clear();
     }//GEN-LAST:event_fileChooseButtonActionPerformed
 
     private void searchButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchButtonActionPerformed
@@ -204,18 +210,6 @@ public class MainFrame extends javax.swing.JFrame {
         setVisible(true);
         setLocation(100, 100);
     }
-
-    
-    public void paintLoop() {
-        while (true) {
-            try {
-                canvas.repaint();
-                Thread.sleep(10);
-            } catch(InterruptedException e) {
-            }
-        }
-    }
-    
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private pathfinder.Canvas canvas;

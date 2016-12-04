@@ -42,6 +42,31 @@ public class Navigator {
         step = 6.f;
     }
     
+    public static float calculateDistance(ArrayList<Point> path) {
+        float result = 0;
+        
+        for (int i = 1; i < path.size(); i++) {
+            Point p1 = path.get(i-1);
+            Point p2 = path.get(i);
+            
+            float dx = p2.x - p1.x;
+            float dy = p2.y - p1.y;
+            dx *= dx; dy *= dy;
+            result += (float)Math.sqrt(dx + dy);
+        }
+        
+        return result;
+    }
+    
+    public static float calculateTotalDistance(ArrayList<ArrayList<Point>> paths) {
+        float result = 0;
+        
+        for (ArrayList<Point> path : paths) 
+            result += calculateDistance(path);
+        
+        return result;
+    }
+    
     public ArrayList<ArrayList<Point>> getLines() {
         ArrayList<ArrayList<Point>> ls = new ArrayList<>();
         
@@ -81,9 +106,9 @@ public class Navigator {
         return start;
     }
     
-    public void clearGoals() {
+    public void clear() {
         goals.clear();
-        paths.clear(); ///////////////////////////////
+        paths.clear(); /////////////////////////////// separate method?
     }
     
     public boolean addGoal(int x, int y) {
@@ -113,20 +138,13 @@ public class Navigator {
     
     public void setImage(String path) {
         this.oc = new OccupancyGrid(path, imgres);
-        
         obstacles = new ArrayList<>(oc.getAsPoints());
     }
   
     public void performSearch() {
-        
-        //AStar astar = new AStar(start, goals.get(0), obstacles, 6);
-        
-        //ArrayList<Point> path;
-        //path = astar.performSearch();
-        //paths.add(path);
         paths.clear();
-        Dijkstra d = new Dijkstra(start, goals, obstacles, step);
-        paths = d.performSearch();
+        Salesman s = new BruteForce(start, goals, obstacles, step);
+        paths = s.performSearch();
     }
     
     public int[] getSize() {

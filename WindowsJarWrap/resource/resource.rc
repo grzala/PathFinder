@@ -1,5 +1,0 @@
-#include "resource.h"
-
-AppIcon ICON "icon.ico"
-
-ID_MYJARFILE JARFILE "PathFinder.jar"

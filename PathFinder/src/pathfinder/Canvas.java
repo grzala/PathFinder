@@ -71,8 +71,7 @@ public class Canvas extends javax.swing.JPanel {
     public void setImage(String path) {
         try {                
           background = ImageIO.read(new File(path));
-        } catch (IOException ex) {
-        }
+        } catch (IOException ex) {}
         
         repaint();
     }
@@ -93,12 +92,14 @@ public class Canvas extends javax.swing.JPanel {
         g2d.setColor(Color.RED);
         Point start = n.getStart();
         g2d.fillOval(origin.x + (start.x-(pointsize/2)), origin.y + (start.y-(pointsize/2)), pointsize, pointsize);
+        g2d.drawString("x: " + start.x + " y: " + start.y, origin.x + start.x + 5, origin.y + start.y + 10);
         
         //goals
         for(Point p : n.getGoals()) {
             g2d.setColor(Color.BLUE);
             int r = pointsize;
             g2d.fillOval(origin.x + (p.x-(r/2)), origin.y + (p.y-(r/2)), r, r);
+            g2d.drawString("x: " + p.x + " y: " + p.y, origin.x + p.x + 5, origin.y + p.y + 10);
         }
        
         //paths
@@ -117,6 +118,10 @@ public class Canvas extends javax.swing.JPanel {
             }
         }
         //g2d.setStroke(new BasicStroke(1));
+        
+        g2d.setColor(Color.BLACK);
+        float totalDistance = Navigator.calculateTotalDistance(lines);
+        g2d.drawString("Total distance: " + totalDistance + "px", 10, 20);
         
         
         Dimension d = getSize();
