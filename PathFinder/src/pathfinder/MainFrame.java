@@ -58,16 +58,17 @@ public class MainFrame extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jPanel1 = new javax.swing.JPanel();
-        jPanel3 = new javax.swing.JPanel();
+        controlPanel = new javax.swing.JPanel();
+        buttonPanel = new javax.swing.JPanel();
         clearButton = new javax.swing.JButton();
         fileChooseButton = new javax.swing.JButton();
         searchButton = new javax.swing.JButton();
         panButton = new javax.swing.JToggleButton();
         setStartButton = new javax.swing.JToggleButton();
         setGoalButton = new javax.swing.JToggleButton();
-        jPanel4 = new javax.swing.JPanel();
-        jPanel2 = new javax.swing.JPanel();
+        choicePanel = new javax.swing.JPanel();
+        graphAlgorithmChooser = new javax.swing.JComboBox<>();
+        canvasPanel = new javax.swing.JPanel();
         canvas = new pathfinder.Canvas();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -76,7 +77,7 @@ public class MainFrame extends javax.swing.JFrame {
         setIconImages(null);
         setName("MainFrame"); // NOI18N
 
-        jPanel1.setLayout(new javax.swing.BoxLayout(jPanel1, javax.swing.BoxLayout.Y_AXIS));
+        controlPanel.setLayout(new javax.swing.BoxLayout(controlPanel, javax.swing.BoxLayout.Y_AXIS));
 
         clearButton.setText("clear");
         clearButton.setFocusPainted(false);
@@ -85,7 +86,7 @@ public class MainFrame extends javax.swing.JFrame {
                 clearButtonActionPerformed(evt);
             }
         });
-        jPanel3.add(clearButton);
+        buttonPanel.add(clearButton);
 
         fileChooseButton.setText("File");
         fileChooseButton.setActionCommand("filechoose");
@@ -95,7 +96,7 @@ public class MainFrame extends javax.swing.JFrame {
                 fileChooseButtonActionPerformed(evt);
             }
         });
-        jPanel3.add(fileChooseButton);
+        buttonPanel.add(fileChooseButton);
 
         searchButton.setText("search");
         searchButton.setFocusPainted(false);
@@ -104,7 +105,7 @@ public class MainFrame extends javax.swing.JFrame {
                 searchButtonActionPerformed(evt);
             }
         });
-        jPanel3.add(searchButton);
+        buttonPanel.add(searchButton);
 
         panButton.setSelected(true);
         panButton.setText("pan");
@@ -114,7 +115,7 @@ public class MainFrame extends javax.swing.JFrame {
                 panButtonActionPerformed(evt);
             }
         });
-        jPanel3.add(panButton);
+        buttonPanel.add(panButton);
 
         setStartButton.setText("set start");
         setStartButton.setFocusPainted(false);
@@ -123,7 +124,7 @@ public class MainFrame extends javax.swing.JFrame {
                 setStartButtonActionPerformed(evt);
             }
         });
-        jPanel3.add(setStartButton);
+        buttonPanel.add(setStartButton);
 
         setGoalButton.setText("set goal");
         setGoalButton.setFocusPainted(false);
@@ -132,26 +133,35 @@ public class MainFrame extends javax.swing.JFrame {
                 setGoalButtonActionPerformed(evt);
             }
         });
-        jPanel3.add(setGoalButton);
+        buttonPanel.add(setGoalButton);
 
-        jPanel1.add(jPanel3);
+        controlPanel.add(buttonPanel);
 
-        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
-        jPanel4.setLayout(jPanel4Layout);
-        jPanel4Layout.setHorizontalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 640, Short.MAX_VALUE)
+        graphAlgorithmChooser.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Closest Neighbour", "Brute Force" }));
+        graphAlgorithmChooser.setFocusable(false);
+
+        javax.swing.GroupLayout choicePanelLayout = new javax.swing.GroupLayout(choicePanel);
+        choicePanel.setLayout(choicePanelLayout);
+        choicePanelLayout.setHorizontalGroup(
+            choicePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, choicePanelLayout.createSequentialGroup()
+                .addContainerGap(314, Short.MAX_VALUE)
+                .addComponent(graphAlgorithmChooser, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(214, 214, 214))
         );
-        jPanel4Layout.setVerticalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 37, Short.MAX_VALUE)
+        choicePanelLayout.setVerticalGroup(
+            choicePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, choicePanelLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(graphAlgorithmChooser, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
 
-        jPanel1.add(jPanel4);
+        controlPanel.add(choicePanel);
 
-        getContentPane().add(jPanel1, java.awt.BorderLayout.PAGE_START);
+        getContentPane().add(controlPanel, java.awt.BorderLayout.PAGE_START);
 
-        jPanel2.setLayout(new javax.swing.BoxLayout(jPanel2, javax.swing.BoxLayout.LINE_AXIS));
+        canvasPanel.setLayout(new javax.swing.BoxLayout(canvasPanel, javax.swing.BoxLayout.LINE_AXIS));
 
         javax.swing.GroupLayout canvasLayout = new javax.swing.GroupLayout(canvas);
         canvas.setLayout(canvasLayout);
@@ -161,12 +171,12 @@ public class MainFrame extends javax.swing.JFrame {
         );
         canvasLayout.setVerticalGroup(
             canvasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 411, Short.MAX_VALUE)
+            .addGap(0, 406, Short.MAX_VALUE)
         );
 
-        jPanel2.add(canvas);
+        canvasPanel.add(canvas);
 
-        getContentPane().add(jPanel2, java.awt.BorderLayout.CENTER);
+        getContentPane().add(canvasPanel, java.awt.BorderLayout.CENTER);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -190,6 +200,8 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_fileChooseButtonActionPerformed
 
     private void searchButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchButtonActionPerformed
+        String graphAlgorithm = String.valueOf(graphAlgorithmChooser.getSelectedItem());
+        n.setGraphAlgorithm(graphAlgorithm);
         n.performSearch();
         canvas.repaint();
     }//GEN-LAST:event_searchButtonActionPerformed
@@ -212,13 +224,14 @@ public class MainFrame extends javax.swing.JFrame {
     }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JPanel buttonPanel;
     private pathfinder.Canvas canvas;
+    private javax.swing.JPanel canvasPanel;
+    private javax.swing.JPanel choicePanel;
     private javax.swing.JButton clearButton;
+    private javax.swing.JPanel controlPanel;
     private javax.swing.JButton fileChooseButton;
-    private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
-    private javax.swing.JPanel jPanel3;
-    private javax.swing.JPanel jPanel4;
+    private javax.swing.JComboBox<String> graphAlgorithmChooser;
     private javax.swing.JToggleButton panButton;
     private javax.swing.JButton searchButton;
     private javax.swing.JToggleButton setGoalButton;

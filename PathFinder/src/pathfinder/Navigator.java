@@ -16,6 +16,7 @@ import java.util.HashMap;
  *
  * @author grzala
  */
+
 public class Navigator {
     
     private OccupancyGrid oc;
@@ -24,6 +25,8 @@ public class Navigator {
     private ArrayList<Point> goals;
     private ArrayList<Point> obstacles;
     private ArrayList<ArrayList<Point>> paths;
+    
+    private GraphAlgorithms graphAlgorithm;
     
     int imgres = 2; //pixels;
     float step;
@@ -40,6 +43,33 @@ public class Navigator {
         goals.add(new Point(250, 40));
         
         step = 6.f;
+        
+        graphAlgorithm = GraphAlgorithms.CLOSESTNEIGHBOUR;
+    }
+    
+    public enum GraphAlgorithms {
+        CLOSESTNEIGHBOUR,
+        BRUTEFORCE
+    }
+    
+    public void setGraphAlgorithm(GraphAlgorithms g) {
+        graphAlgorithm = g;
+    }
+    
+    public void setGraphAlgorithm(String s) {
+        s = s.replaceAll("\\s+","");
+        s = s.toLowerCase();
+        
+        switch (s) {
+            case "closestneighbour":
+                setGraphAlgorithm(GraphAlgorithms.CLOSESTNEIGHBOUR);
+                break;
+            case "bruteforce":
+                setGraphAlgorithm(GraphAlgorithms.BRUTEFORCE);
+                break;
+            default:
+                System.out.println("no such algorithm");
+        }
     }
     
     public static float calculateDistance(ArrayList<Point> path) {
@@ -143,7 +173,22 @@ public class Navigator {
   
     public void performSearch() {
         paths.clear();
-        Salesman s = new BruteForce(start, goals, obstacles, step);
+        Salesman s = null;
+        
+        switch (graphAlgorithm) {
+            case CLOSESTNEIGHBOUR:
+                s = new ClosestNeighbour(start, goals, obstacles, step);
+                break;
+                
+            case BRUTEFORCE:
+                s = new BruteForce(start, goals, obstacles, step);
+                break;
+                
+            default:
+                System.out.println("ERROR");
+                break;
+        }
+        
         paths = s.performSearch();
     }
     
