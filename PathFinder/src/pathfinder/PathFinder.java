@@ -12,12 +12,7 @@ package pathfinder;
 public class PathFinder {
 
     public static void main(String[] args) {
-        Navigator n = new Navigator();
-        MainFrame frame = new MainFrame(n);
-        
-        new Thread(() -> {
-            frame.createAndShowGUI();
-        }).start();
+        MainFrameController mfc = new MainFrameController();
     }
     
 }

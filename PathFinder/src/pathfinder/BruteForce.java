@@ -27,6 +27,7 @@ public class BruteForce extends Salesman {
     public ArrayList<ArrayList<Point>> performSearch() {
         ArrayList<Node> Q = new ArrayList<>(nodes);
         
+        //find all paths O(n^2)
         for (Node n : Q) {
             for (Node n2 : Q) {
                 if (n != n2) {
@@ -37,10 +38,12 @@ public class BruteForce extends Salesman {
             }
         }
         
+        //remove start and add it later to ensure it is first on the list
         Node start = Q.remove(0); //remove start;
 
         ArrayList<List<Node>> perms = new ArrayList<>(listPermutations(Q));
         
+        //find shortest permutation
         float distance = Float.MAX_VALUE;
         ArrayList<Node> shortestPath = new ArrayList<>();
         
@@ -53,6 +56,7 @@ public class BruteForce extends Salesman {
             }
         }
         
+        //construct path
         for (int i = 0; i < shortestPath.size() - 1; i++) 
             paths.add(shortestPath.get(i).getPathFor(shortestPath.get(i+1)));
         
@@ -87,16 +91,11 @@ public class BruteForce extends Salesman {
         float result = 0;
         
         for (int i = 1; i < path.size(); i++) {
-            Point p1 = path.get(i-1).getNode();
-            Point p2 = path.get(i).getNode();
-            
-            float dx = p2.x - p1.x;
-            float dy = p2.y - p1.y;
-            dx *= dx; dy *= dy;
-            result += (float)Math.sqrt(dx + dy);
+            Node n1 = path.get(i-1);
+            Node n2 = path.get(i);
+            result += n1.getDistance(n2);
         }
         
         return result;
     }
-    
 }

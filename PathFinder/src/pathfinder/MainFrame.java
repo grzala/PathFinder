@@ -48,6 +48,10 @@ public class MainFrame extends javax.swing.JFrame {
         
         canvas.requestFocus(true);
     }
+    
+    public Canvas getCanvas() {
+        return canvas;
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -81,58 +85,28 @@ public class MainFrame extends javax.swing.JFrame {
 
         clearButton.setText("clear");
         clearButton.setFocusPainted(false);
-        clearButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                clearButtonActionPerformed(evt);
-            }
-        });
         buttonPanel.add(clearButton);
 
         fileChooseButton.setText("File");
         fileChooseButton.setActionCommand("filechoose");
         fileChooseButton.setFocusPainted(false);
-        fileChooseButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                fileChooseButtonActionPerformed(evt);
-            }
-        });
         buttonPanel.add(fileChooseButton);
 
         searchButton.setText("search");
         searchButton.setFocusPainted(false);
-        searchButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                searchButtonActionPerformed(evt);
-            }
-        });
         buttonPanel.add(searchButton);
 
         panButton.setSelected(true);
         panButton.setText("pan");
         panButton.setFocusPainted(false);
-        panButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                panButtonActionPerformed(evt);
-            }
-        });
         buttonPanel.add(panButton);
 
         setStartButton.setText("set start");
         setStartButton.setFocusPainted(false);
-        setStartButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                setStartButtonActionPerformed(evt);
-            }
-        });
         buttonPanel.add(setStartButton);
 
         setGoalButton.setText("set goal");
         setGoalButton.setFocusPainted(false);
-        setGoalButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                setGoalButtonActionPerformed(evt);
-            }
-        });
         buttonPanel.add(setGoalButton);
 
         controlPanel.add(buttonPanel);
@@ -181,43 +155,6 @@ public class MainFrame extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void clearButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clearButtonActionPerformed
-        n.clear();
-        canvas.repaint();
-    }//GEN-LAST:event_clearButtonActionPerformed
-
-    private void fileChooseButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fileChooseButtonActionPerformed
-        JFileChooser chooser = new JFileChooser(".");
-        FileNameExtensionFilter filter = new FileNameExtensionFilter("JPG & PNG Images", "jpg", "png");
-        chooser.setFileFilter(filter);
-        int returnVal = chooser.showOpenDialog(null);
-        if(returnVal == JFileChooser.APPROVE_OPTION) {
-           n.setImage(chooser.getSelectedFile().getPath());
-           canvas.setImage(chooser.getSelectedFile().getPath());
-        }
-        
-        n.clear();
-    }//GEN-LAST:event_fileChooseButtonActionPerformed
-
-    private void searchButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchButtonActionPerformed
-        String graphAlgorithm = String.valueOf(graphAlgorithmChooser.getSelectedItem());
-        n.setGraphAlgorithm(graphAlgorithm);
-        n.performSearch();
-        canvas.repaint();
-    }//GEN-LAST:event_searchButtonActionPerformed
-
-    private void panButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_panButtonActionPerformed
-        canvas.setMode(Canvas.Mode.PAN);
-    }//GEN-LAST:event_panButtonActionPerformed
-
-    private void setStartButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_setStartButtonActionPerformed
-        canvas.setMode(Canvas.Mode.SETSTART);
-    }//GEN-LAST:event_setStartButtonActionPerformed
-
-    private void setGoalButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_setGoalButtonActionPerformed
-        canvas.setMode(Canvas.Mode.SETGOAL);
-    }//GEN-LAST:event_setGoalButtonActionPerformed
-
     public void createAndShowGUI() {
         setVisible(true);
         setLocation(100, 100);
@@ -228,13 +165,13 @@ public class MainFrame extends javax.swing.JFrame {
     private pathfinder.Canvas canvas;
     private javax.swing.JPanel canvasPanel;
     private javax.swing.JPanel choicePanel;
-    private javax.swing.JButton clearButton;
+    public javax.swing.JButton clearButton;
     private javax.swing.JPanel controlPanel;
-    private javax.swing.JButton fileChooseButton;
-    private javax.swing.JComboBox<String> graphAlgorithmChooser;
-    private javax.swing.JToggleButton panButton;
-    private javax.swing.JButton searchButton;
-    private javax.swing.JToggleButton setGoalButton;
-    private javax.swing.JToggleButton setStartButton;
+    public javax.swing.JButton fileChooseButton;
+    public javax.swing.JComboBox<String> graphAlgorithmChooser;
+    public javax.swing.JToggleButton panButton;
+    public javax.swing.JButton searchButton;
+    public javax.swing.JToggleButton setGoalButton;
+    public javax.swing.JToggleButton setStartButton;
     // End of variables declaration//GEN-END:variables
 }
