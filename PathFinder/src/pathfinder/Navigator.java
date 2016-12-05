@@ -24,9 +24,11 @@ public class Navigator {
     private Point start;
     private ArrayList<Point> goals;
     private ArrayList<Point> obstacles;
+    private ArrayList<Point> additional;
     private ArrayList<ArrayList<Point>> paths;
     
     private GraphAlgorithms graphAlgorithm;
+    private PathAlgorithms pathAlgorithm;
     
     int imgres = 2; //pixels;
     float step;
@@ -35,6 +37,7 @@ public class Navigator {
         start = new Point();
         goals = new ArrayList<>();
         obstacles = new ArrayList<>();
+        additional = new ArrayList<>();
         paths = new ArrayList<>();
         
         start.x = 47; start.y = 270;
@@ -52,8 +55,17 @@ public class Navigator {
         BRUTEFORCE
     }
     
+    public enum PathAlgorithms {
+        ASTAR,
+        DIJKSTRA
+    }
+    
     public void setGraphAlgorithm(GraphAlgorithms g) {
         graphAlgorithm = g;
+    }
+    
+    public void setPathAlgorithm(PathAlgorithms g) {
+        pathAlgorithm = g;
     }
     
     public void setGraphAlgorithm(String s) {
@@ -66,6 +78,22 @@ public class Navigator {
                 break;
             case "bruteforce":
                 setGraphAlgorithm(GraphAlgorithms.BRUTEFORCE);
+                break;
+            default:
+                System.out.println("no such algorithm");
+        }
+    }
+    
+    public void setPathAlgorithm(String s) {
+        s = s.replaceAll("\\s+","");
+        s = s.toLowerCase();
+        
+        switch (s) {
+            case "a*":
+                setPathAlgorithm(PathAlgorithms.ASTAR);
+                break;
+            case "dijkstra":
+                setPathAlgorithm(PathAlgorithms.DIJKSTRA);
                 break;
             default:
                 System.out.println("no such algorithm");
@@ -138,6 +166,7 @@ public class Navigator {
     
     public void clear() {
         goals.clear();
+        additional.clear();
         paths.clear(); /////////////////////////////// separate method?
     }
     
@@ -166,6 +195,10 @@ public class Navigator {
         */
     }
     
+    public ArrayList<Point> getAdditional() {
+        return additional;
+    }
+    
     public void setImage(String path) {
         this.oc = new OccupancyGrid(path, imgres);
         obstacles = new ArrayList<>(oc.getAsPoints());
@@ -173,15 +206,29 @@ public class Navigator {
   
     public void performSearch() {
         paths.clear();
-        Salesman s = null;
+        PathSearch ps = null;
+        switch (pathAlgorithm) {
+            case ASTAR:
+                ps = new AStar();
+                break;
+            
+            case DIJKSTRA:
+                ps = new DijkstraPath();
+                break;
+                
+            default:
+                System.out.println("ERROR");
+                break;
+        }
         
+        Salesman s = null;
         switch (graphAlgorithm) {
             case CLOSESTNEIGHBOUR:
-                s = new ClosestNeighbour(start, goals, obstacles, step);
+                s = new ClosestNeighbour(ps, start, goals, obstacles, step);
                 break;
                 
             case BRUTEFORCE:
-                s = new BruteForce(start, goals, obstacles, step);
+                s = new BruteForce(ps, start, goals, obstacles, step);
                 break;
                 
             default:
@@ -190,6 +237,7 @@ public class Navigator {
         }
         
         paths = s.performSearch();
+        
     }
     
     public int[] getSize() {

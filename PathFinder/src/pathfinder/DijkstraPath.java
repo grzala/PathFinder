@@ -8,22 +8,21 @@ package pathfinder;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.PriorityQueue;
 
 /**
  *
- * @author grzala
+ * @author Grzala
  */
-public class AStar extends PathSearch {
+public class DijkstraPath extends PathSearch {
     
-    public AStar(Point start, Point goal, ArrayList<Point> obstacles, int cellsize) {
+    public DijkstraPath(Point start, Point goal, ArrayList<Point> obstacles, int cellsize) {
         super(start, goal, obstacles, cellsize);
     }
     
-    public AStar() {
+    public DijkstraPath() {
         
     }
     
@@ -33,46 +32,41 @@ public class AStar extends PathSearch {
         Comparator<PrioritisedPoint> comparator = new PPComparator();
         PriorityQueue<PrioritisedPoint> head = new PriorityQueue(16, comparator);
         
-        head.add(new PrioritisedPoint(start, 0));
-        
         HashMap<Point, Point> cameFrom = new HashMap<>();
         HashMap<Point, Float> costSoFar = new HashMap<>();
         
+        head.add(new PrioritisedPoint(start, 0.f));
         cameFrom.put(start, null);
         costSoFar.put(start, 0.0f);
         
         Rectangle goalRect = new Rectangle(goal.x - cellsize/2, goal.y - cellsize/2, cellsize, cellsize);
-        try {
-            while (head.size() > 0) {
-                Point current = head.poll().toPoint();
-
-                if (goalRect.contains(current)) {//goal reached
-                    if (current != goal) {
-                        current = cameFrom.get(current); //the current one is might make path longer
-                        cameFrom.put(goal, current);
-                        float newCost = costSoFar.get(current) + heur(current, goal);
-                        costSoFar.put(goal, newCost);
-
-                    }
-                    break;
+        while (head.size() > 0) {
+            
+            Point current = head.poll().toPoint();
+            
+            if (goalRect.contains(current)) {//goal reached
+                if (current != goal) {
+                    current = cameFrom.get(current); //the current one is might make path longer
+                    cameFrom.put(goal, current);
+                    float newCost = costSoFar.get(current) + heur(current, goal);
+                    costSoFar.put(goal, newCost);
                 }
-
-                for (Point next : getNext(current)) {
-                    float newCost = costSoFar.get(current) + heur(current, next);
-
-                    if (costSoFar.get(next) == null || newCost < costSoFar.get(next)) {
-                        costSoFar.put(next, newCost);
-                        float priority = newCost + heur(goal, next);
-                        head.add(new PrioritisedPoint(next, priority));
-                        cameFrom.put(next, current);
-                    }
+                break;
+            }
+            
+            for (Point next : getNext(current)) {
+                if (costSoFar.get(next) == null) 
+                    costSoFar.put(next, Float.MAX_VALUE);
+                
+                float alt = costSoFar.get(current) + heur(current, next);
+                
+                if (alt < costSoFar.get(next)) {
+                    costSoFar.put(next, alt);
+                    cameFrom.put(next, current);
+                    head.add(new PrioritisedPoint(next, alt));
                 }
             }
-        } catch(OutOfMemoryError e) {
-            System.out.println("Out Of Memory");
-            e.printStackTrace();
-            return path;
-        } 
+        }
         
         if (cameFrom.get(goal) == null) { // no path
             System.out.println("No path found");
@@ -91,7 +85,8 @@ public class AStar extends PathSearch {
         }
         path = reverse;
         
-        //Add remove points that are in line;
+        //Add remove points that are in line; //put these things above in PathSearch as protected methods
+        //timing
         
         this.path = path;
         this.cost = costSoFar.get(goal);

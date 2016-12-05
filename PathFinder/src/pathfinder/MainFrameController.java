@@ -6,9 +6,11 @@
 package pathfinder;
 
 import java.awt.Event;
+import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JFileChooser;
+import javax.swing.SwingUtilities;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
@@ -24,12 +26,13 @@ public class MainFrameController {
     
     public MainFrameController() {
         n = new Navigator();
-        frame = new MainFrame(n);
+        frame = new MainFrame();
+        canvas = frame.getCanvas();
         
         startGUIThread();
         setActions();
         
-        canvas = frame.getCanvas();
+        repaint();
     }
     
     private void startGUIThread() {
@@ -42,7 +45,7 @@ public class MainFrameController {
         //clear
         frame.clearButton.addActionListener((ActionEvent evt) -> {
             n.clear();
-            canvas.repaint();
+            repaint();
         });
         //fileChoose
         frame.fileChooseButton.addActionListener((ActionEvent evt) -> {
@@ -55,13 +58,16 @@ public class MainFrameController {
                 canvas.setImage(chooser.getSelectedFile().getPath());
             }
             n.clear();
+            repaint();
         });
         //search
         frame.searchButton.addActionListener((ActionEvent evt) -> {
             String graphAlgorithm = String.valueOf(frame.graphAlgorithmChooser.getSelectedItem());
+            String pathAlgorithm = String.valueOf(frame.pathAlgorithmChooser.getSelectedItem());
             n.setGraphAlgorithm(graphAlgorithm);
+            n.setPathAlgorithm(pathAlgorithm);
             n.performSearch();
-            canvas.repaint();
+            repaint();
         });
         //pan
         frame.panButton.addActionListener((ActionEvent evt) -> {
@@ -75,6 +81,33 @@ public class MainFrameController {
         frame.setGoalButton.addActionListener((ActionEvent evt) -> {
             canvas.setMode(Canvas.Mode.SETGOAL);
         });
+        
+        //canvas clicks
+        canvas.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                Point origin = canvas.getOrigin();
+                if (canvas.getMode() == Canvas.Mode.SETSTART) 
+                    n.setStart(evt.getX() - origin.x, evt.getY() - origin.y);
+
+                if (canvas.getMode() == Canvas.Mode.SETGOAL) {
+                    if(SwingUtilities.isLeftMouseButton(evt)) {
+                        n.addGoal(evt.getX() - origin.x, evt.getY() - origin.y);
+                    } else if(SwingUtilities.isRightMouseButton(evt)) {
+                        n.removeLastGoal();
+                    } 
+                } 
+                repaint();
+            }
+        });
+    }
+    
+    private void repaint() {
+        canvas.lines = n.getLines();
+        canvas.goals = n.getGoals();
+        canvas.start = n.getStart();
+        canvas.boardSize = n.getSize();
+        canvas.additional = n.getAdditional();
+        canvas.repaint();
     }
     
 }

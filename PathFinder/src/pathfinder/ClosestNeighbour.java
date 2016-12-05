@@ -15,8 +15,8 @@ import java.util.HashMap;
  */
 public class ClosestNeighbour extends Salesman {
     
-    public ClosestNeighbour(Point start, ArrayList<Point> goals, ArrayList<Point> obstacles, float step) {
-        super(start, goals, obstacles, step);
+    public ClosestNeighbour(PathSearch ps, Point start, ArrayList<Point> goals, ArrayList<Point> obstacles, float step) {
+        super(ps, start, goals, obstacles, step);
     }
     
     @Override
@@ -31,9 +31,9 @@ public class ClosestNeighbour extends Salesman {
             //populate neighbours
             for (Salesman.Node n : nodes) {
                 if (!(currentNode.equals(n)) && !(nodesVisited.contains(n))) {
-                    AStar astar = new AStar(currentNode.getNode(), n.getNode(), obstacles, (int)step);
-                    astar.performSearch();
-                    currentNode.addEdge(n, astar.getPath(), astar.getCost());
+                    ps.reset(currentNode.getNode(), n.getNode(), obstacles, (int)step);
+                    ps.performSearch();
+                    currentNode.addEdge(n, ps.getPath(), ps.getCost());
                 }
             }
             

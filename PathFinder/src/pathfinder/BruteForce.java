@@ -19,8 +19,8 @@ import java.util.Stack;
  */
 public class BruteForce extends Salesman {
     
-    public BruteForce(Point start, ArrayList<Point> goals, ArrayList<Point> obstacles, float step) {
-        super(start, goals, obstacles, step);
+    public BruteForce(PathSearch ps, Point start, ArrayList<Point> goals, ArrayList<Point> obstacles, float step) {
+        super(ps, start, goals, obstacles, step);
     }
     
     @Override
@@ -31,9 +31,9 @@ public class BruteForce extends Salesman {
         for (Node n : Q) {
             for (Node n2 : Q) {
                 if (n != n2) {
-                    AStar astar = new AStar(n.getNode(), n2.getNode(), obstacles, (int)step);
-                    astar.performSearch();
-                    n.addEdge(n2, astar.getPath(), astar.getCost());
+                    ps.reset(n.getNode(), n2.getNode(), obstacles, (int)step);
+                    ps.performSearch();
+                    n.addEdge(n2, ps.getPath(), ps.getCost());
                 }
             }
         }

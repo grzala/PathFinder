@@ -35,23 +35,31 @@ public class Canvas extends javax.swing.JPanel {
     }
     
     Point origin, mousept;
-    
-    private Navigator n;
     private BufferedImage background;
-    
     private int pointsize = 5;
    
     private Mode mode;
-    
     private Color[] pathColors;
+    
+    //toDraw
+    public ArrayList<ArrayList<Point>> lines;
+    public ArrayList<Point> goals;
+    public ArrayList<Point> additional;
+    public Point start;
+    public int[] boardSize;
     
     public Canvas() {
         initComponents();
         setIgnoreRepaint(true);
-        n = new Navigator(); // unused but prevents null exception
         background = null;
         
-        origin  = new Point();
+        lines = new ArrayList<>();
+        goals = new ArrayList<>();
+        additional = new ArrayList<>();
+        start = new Point();
+        boardSize = new int[2];
+        
+        origin  = new Point(0, 0);
         mousept = new Point();
         pathColors = new Color[] {
             new Color(180, 60, 240), //purple
@@ -64,8 +72,12 @@ public class Canvas extends javax.swing.JPanel {
         mode = m;
     }
     
-    public void setNavigator(Navigator n) {
-        this.n = n;
+    public Mode getMode() {
+        return mode;
+    }
+    
+    public Point getOrigin() {
+        return origin;
     }
     
     public void setImage(String path) {
@@ -90,21 +102,26 @@ public class Canvas extends javax.swing.JPanel {
         
         //start
         g2d.setColor(Color.RED);
-        Point start = n.getStart();
         g2d.fillOval(origin.x + (start.x-(pointsize/2)), origin.y + (start.y-(pointsize/2)), pointsize, pointsize);
         g2d.drawString("x: " + start.x + " y: " + start.y, origin.x + start.x + 5, origin.y + start.y + 10);
         
         //goals
-        for(Point p : n.getGoals()) {
+        for(Point p : goals) {
             g2d.setColor(Color.BLUE);
             int r = pointsize;
             g2d.fillOval(origin.x + (p.x-(r/2)), origin.y + (p.y-(r/2)), r, r);
             g2d.drawString("x: " + p.x + " y: " + p.y, origin.x + p.x + 5, origin.y + p.y + 10);
         }
-       
-        //paths
-        ArrayList<ArrayList<Point>> lines = n.getLines();
         
+        //additional
+        for(Point p : additional) {
+            g2d.setColor(Color.BLACK);
+            int r = pointsize;
+            g2d.fillOval(origin.x + (p.x-(r/2)), origin.y + (p.y-(r/2)), r, r);
+            //g2d.drawString("x: " + p.x + " y: " + p.y, origin.x + p.x + 5, origin.y + p.y + 10);
+        }
+        
+        //paths
         int colorIndex = 0;
         //g2d.setStroke(new BasicStroke(2));
         for (ArrayList<Point> line : lines) {
@@ -126,7 +143,7 @@ public class Canvas extends javax.swing.JPanel {
         
         Dimension d = getSize();
         g2d.setColor(Color.RED);
-        int w = n.getSize()[0]; int h = n.getSize()[1];
+        int w = boardSize[0]; int h = boardSize[1];
         g2d.drawRect(origin.x, origin.y, w-1, h-1);
         
     }
@@ -151,9 +168,6 @@ public class Canvas extends javax.swing.JPanel {
             public void mousePressed(java.awt.event.MouseEvent evt) {
                 formMousePressed(evt);
             }
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                formMouseClicked(evt);
-            }
         });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -167,21 +181,6 @@ public class Canvas extends javax.swing.JPanel {
             .addGap(0, 300, Short.MAX_VALUE)
         );
     }// </editor-fold>//GEN-END:initComponents
-
-    private void formMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMouseClicked
-        if (mode == Mode.SETSTART) 
-            n.setStart(evt.getX() - origin.x, evt.getY() - origin.y);
-        
-        if (mode == Mode.SETGOAL) {
-            if(SwingUtilities.isLeftMouseButton(evt)) {
-                n.addGoal(evt.getX() - origin.x, evt.getY() - origin.y);
-            } else if(SwingUtilities.isRightMouseButton(evt)) {
-                n.removeLastGoal();
-            } 
-        }
-        
-        repaint();
-    }//GEN-LAST:event_formMouseClicked
 
     private void formMouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMouseDragged
         if (mode == Mode.PAN) {

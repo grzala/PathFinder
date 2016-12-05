@@ -22,7 +22,10 @@ public abstract class Salesman {
     protected ArrayList<Node> nodes;
     protected ArrayList<ArrayList<Point>> paths;
     
-    public Salesman(Point start, ArrayList<Point> goals, ArrayList<Point> obstacles, float step) {
+    protected PathSearch ps;
+    
+    public Salesman(PathSearch ps, Point start, ArrayList<Point> goals, ArrayList<Point> obstacles, float step) {
+        this.ps = ps;
         this.start = start;
         this.goals = goals;
         this.obstacles = obstacles;

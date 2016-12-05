@@ -5,13 +5,10 @@
  */
 package pathfinder;
 
-import java.awt.Toolkit;
 import java.net.URL;
 import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
-import javax.swing.JFileChooser;
 import javax.swing.UIManager;
-import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
  *
@@ -22,18 +19,15 @@ public class MainFrame extends javax.swing.JFrame {
     /**
      * Creates new form MainFrame
      */
-    private final Navigator n;
     
     private final ButtonGroup canvasMode;
     
-    public MainFrame(Navigator n) {
+    public MainFrame() {
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         } catch (Exception e) {}
         
         initComponents();
-        canvas.setNavigator(n);
-        this.n = n;
         
         canvasMode = new ButtonGroup();
         canvasMode.add(setStartButton);
@@ -72,6 +66,7 @@ public class MainFrame extends javax.swing.JFrame {
         setGoalButton = new javax.swing.JToggleButton();
         choicePanel = new javax.swing.JPanel();
         graphAlgorithmChooser = new javax.swing.JComboBox<>();
+        pathAlgorithmChooser = new javax.swing.JComboBox<>();
         canvasPanel = new javax.swing.JPanel();
         canvas = new pathfinder.Canvas();
 
@@ -114,12 +109,16 @@ public class MainFrame extends javax.swing.JFrame {
         graphAlgorithmChooser.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Closest Neighbour", "Brute Force" }));
         graphAlgorithmChooser.setFocusable(false);
 
+        pathAlgorithmChooser.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "A*", "Dijkstra" }));
+
         javax.swing.GroupLayout choicePanelLayout = new javax.swing.GroupLayout(choicePanel);
         choicePanel.setLayout(choicePanelLayout);
         choicePanelLayout.setHorizontalGroup(
             choicePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, choicePanelLayout.createSequentialGroup()
-                .addContainerGap(314, Short.MAX_VALUE)
+                .addContainerGap(189, Short.MAX_VALUE)
+                .addComponent(pathAlgorithmChooser, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(64, 64, 64)
                 .addComponent(graphAlgorithmChooser, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(214, 214, 214))
         );
@@ -127,7 +126,9 @@ public class MainFrame extends javax.swing.JFrame {
             choicePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, choicePanelLayout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(graphAlgorithmChooser, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(choicePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(graphAlgorithmChooser, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(pathAlgorithmChooser, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
 
@@ -170,6 +171,7 @@ public class MainFrame extends javax.swing.JFrame {
     public javax.swing.JButton fileChooseButton;
     public javax.swing.JComboBox<String> graphAlgorithmChooser;
     public javax.swing.JToggleButton panButton;
+    public javax.swing.JComboBox<String> pathAlgorithmChooser;
     public javax.swing.JButton searchButton;
     public javax.swing.JToggleButton setGoalButton;
     public javax.swing.JToggleButton setStartButton;
