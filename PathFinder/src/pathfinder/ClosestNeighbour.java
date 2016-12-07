@@ -21,6 +21,7 @@ public class ClosestNeighbour extends Salesman {
     
     @Override
     public ArrayList<ArrayList<Point>> performSearch() {
+        startTimeMeasurement();
         paths = new ArrayList<>();
         
         Salesman.Node currentNode = nodes.get(0); //start from startPoint
@@ -31,9 +32,11 @@ public class ClosestNeighbour extends Salesman {
             //populate neighbours
             for (Salesman.Node n : nodes) {
                 if (!(currentNode.equals(n)) && !(nodesVisited.contains(n))) {
+                    double t = System.nanoTime(); //search time
                     ps.reset(currentNode.getNode(), n.getNode(), obstacles, (int)step);
                     ps.performSearch();
                     currentNode.addEdge(n, ps.getPath(), ps.getCost());
+                    pathTimes.add(System.nanoTime() - t);
                 }
             }
             
@@ -44,6 +47,7 @@ public class ClosestNeighbour extends Salesman {
             currentNode = newNode;
             nodesVisited.add(currentNode);
         }
+        endTimeMeasurement();
         return paths;
     }
 }

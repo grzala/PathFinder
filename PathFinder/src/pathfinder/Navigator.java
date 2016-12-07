@@ -30,6 +30,8 @@ public class Navigator {
     private GraphAlgorithms graphAlgorithm;
     private PathAlgorithms pathAlgorithm;
     
+    private double graphTime, avgPathTime;
+    
     int imgres = 2; //pixels;
     float step;
     
@@ -46,6 +48,8 @@ public class Navigator {
         goals.add(new Point(250, 40));
         
         step = 6.f;
+        
+        graphTime = 0; avgPathTime = 0;
         
         graphAlgorithm = GraphAlgorithms.CLOSESTNEIGHBOUR;
     }
@@ -199,6 +203,14 @@ public class Navigator {
         return additional;
     }
     
+    public double[] getTimes() {
+        double[] d = new double[2];
+        
+        d[0] = graphTime; d[1] = avgPathTime;
+        
+        return d;
+    }
+    
     public void setImage(String path) {
         this.oc = new OccupancyGrid(path, imgres);
         obstacles = new ArrayList<>(oc.getAsPoints());
@@ -237,7 +249,7 @@ public class Navigator {
         }
         
         paths = s.performSearch();
-        
+        graphTime = s.getTime()[0]; avgPathTime = s.getTime()[1];
     }
     
     public int[] getSize() {

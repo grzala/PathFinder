@@ -25,15 +25,18 @@ public class BruteForce extends Salesman {
     
     @Override
     public ArrayList<ArrayList<Point>> performSearch() {
+        startTimeMeasurement();
         ArrayList<Node> Q = new ArrayList<>(nodes);
         
         //find all paths O(n^2)
         for (Node n : Q) {
             for (Node n2 : Q) {
                 if (n != n2) {
+                    double t = System.nanoTime(); //search time
                     ps.reset(n.getNode(), n2.getNode(), obstacles, (int)step);
                     ps.performSearch();
                     n.addEdge(n2, ps.getPath(), ps.getCost());
+                    pathTimes.add(System.nanoTime() - t);
                 }
             }
         }
@@ -59,6 +62,8 @@ public class BruteForce extends Salesman {
         //construct path
         for (int i = 0; i < shortestPath.size() - 1; i++) 
             paths.add(shortestPath.get(i).getPathFor(shortestPath.get(i+1)));
+        
+        endTimeMeasurement();
         
         return paths;
     }

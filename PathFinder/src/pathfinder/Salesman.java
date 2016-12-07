@@ -22,6 +22,9 @@ public abstract class Salesman {
     protected ArrayList<Node> nodes;
     protected ArrayList<ArrayList<Point>> paths;
     
+    protected double searchTime;
+    protected ArrayList<Double> pathTimes;
+    
     protected PathSearch ps;
     
     public Salesman(PathSearch ps, Point start, ArrayList<Point> goals, ArrayList<Point> obstacles, float step) {
@@ -32,11 +35,35 @@ public abstract class Salesman {
         this.step = step;
         nodes = new ArrayList<>();
         paths = new ArrayList<>();
+        searchTime = 0;
+        pathTimes = new ArrayList<>();
         
         initDiagram();
     }
     
+    protected final void startTimeMeasurement() {
+        searchTime = System.nanoTime();
+    }
+    
     public abstract ArrayList<ArrayList<Point>> performSearch();
+    
+    protected final void endTimeMeasurement() {
+        searchTime = System.nanoTime() - searchTime;
+    }
+    
+    protected final double[] getTime() {
+        double b = 0;
+        
+        double sum = 0;
+        for (Double d : pathTimes) 
+            sum += d;
+        
+        b = sum / (double)pathTimes.size();
+        
+        //need to subtract sum from search time as all path search times are in graph search time as well
+        //return in millis
+        return new double[] {(searchTime - sum)/1000.0, b/1000.0};
+    }
     
     public ArrayList<ArrayList<Point>> getPaths() {
         return paths;

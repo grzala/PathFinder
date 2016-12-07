@@ -47,6 +47,7 @@ public class Canvas extends javax.swing.JPanel {
     public ArrayList<Point> additional;
     public Point start;
     public int[] boardSize;
+    public double[] times;
     
     public Canvas() {
         initComponents();
@@ -58,6 +59,7 @@ public class Canvas extends javax.swing.JPanel {
         additional = new ArrayList<>();
         start = new Point();
         boardSize = new int[2];
+        times = new double[2];
         
         origin  = new Point(0, 0);
         mousept = new Point();
@@ -139,6 +141,9 @@ public class Canvas extends javax.swing.JPanel {
         g2d.setColor(Color.BLACK);
         float totalDistance = Navigator.calculateTotalDistance(lines);
         g2d.drawString("Total distance: " + totalDistance + "px", 10, 20);
+        g2d.drawString("Graph search time: " + times[0] + "ms", 10, 35);
+        g2d.drawString("Average path search time: " + times[1] + "ms", 10, 50);
+        
         
         
         Dimension d = getSize();

@@ -106,6 +106,7 @@ public class MainFrameController {
         canvas.goals = n.getGoals();
         canvas.start = n.getStart();
         canvas.boardSize = n.getSize();
+        canvas.times = n.getTimes();
         canvas.additional = n.getAdditional();
         canvas.repaint();
     }
