@@ -3,8 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package pathfinder;
+package graphfinding;
 
+import pathfinding.PathSearch;
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -51,7 +52,7 @@ public abstract class Salesman {
         searchTime = System.nanoTime() - searchTime;
     }
     
-    protected final double[] getTime() {
+    public final double[] getTime() {
         double b = 0;
         
         double sum = 0;
@@ -62,7 +63,7 @@ public abstract class Salesman {
         
         //need to subtract sum from search time as all path search times are in graph search time as well
         //return in millis
-        return new double[] {(searchTime - sum)/1000.0, b/1000.0};
+        return new double[] {(searchTime - sum)/1000000.0, b/1000000.0};
     }
     
     public ArrayList<ArrayList<Point>> getPaths() {
@@ -139,5 +140,8 @@ public abstract class Salesman {
             return paths.get(n);
         }
         
+        public String toString() {
+            return this.node.toString();
+        }
     }
 }

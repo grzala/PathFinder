@@ -3,8 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package pathfinder;
+package graphfinding;
 
+import pathfinding.PathSearch;
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
@@ -12,6 +13,8 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.Stack;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -43,25 +46,31 @@ public class BruteForce extends Salesman {
         
         //remove start and add it later to ensure it is first on the list
         Node start = Q.remove(0); //remove start;
+        
+        try {
+            ArrayList<List<Node>> perms = new ArrayList<>(listPermutations(Q));
+            
+            //find shortest permutation
+            float distance = Float.MAX_VALUE;
+            ArrayList<Node> shortestPath = new ArrayList<>();
 
-        ArrayList<List<Node>> perms = new ArrayList<>(listPermutations(Q));
-        
-        //find shortest permutation
-        float distance = Float.MAX_VALUE;
-        ArrayList<Node> shortestPath = new ArrayList<>();
-        
-        for (List<Node> path : perms) {
-            path.add(0, start); //start Node
-            float newdist = calculateDistance(path);
-            if (newdist < distance) {
-                shortestPath = new ArrayList<>(path);
-                distance = newdist;
+            for (List<Node> path : perms) {
+                path.add(0, start); //start Node
+                float newdist = calculateDistance(path);
+                if (newdist < distance) {
+                    shortestPath = new ArrayList<>(path);
+                    distance = newdist;
+                }
             }
-        }
+
+            //construct path
+            for (int i = 0; i < shortestPath.size() - 1; i++) 
+                paths.add(shortestPath.get(i).getPathFor(shortestPath.get(i+1)));
         
-        //construct path
-        for (int i = 0; i < shortestPath.size() - 1; i++) 
-            paths.add(shortestPath.get(i).getPathFor(shortestPath.get(i+1)));
+        } catch(OutOfMemoryError e) {
+            JOptionPane.showMessageDialog(new JFrame(), "Out of memory. Change points or use different algorithms");
+            return paths;
+        }
         
         endTimeMeasurement();
         

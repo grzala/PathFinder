@@ -57,16 +57,21 @@ public class MainFrame extends javax.swing.JFrame {
     private void initComponents() {
 
         controlPanel = new javax.swing.JPanel();
+        choicePanel = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
+        pathAlgorithmChooser = new javax.swing.JComboBox<>();
+        filler3 = new javax.swing.Box.Filler(new java.awt.Dimension(10, 0), new java.awt.Dimension(10, 0), new java.awt.Dimension(10, 32767));
+        jLabel2 = new javax.swing.JLabel();
+        graphAlgorithmChooser = new javax.swing.JComboBox<>();
         buttonPanel = new javax.swing.JPanel();
         clearButton = new javax.swing.JButton();
         fileChooseButton = new javax.swing.JButton();
-        searchButton = new javax.swing.JButton();
+        filler1 = new javax.swing.Box.Filler(new java.awt.Dimension(40, 0), new java.awt.Dimension(40, 0), new java.awt.Dimension(40, 32767));
         panButton = new javax.swing.JToggleButton();
         setStartButton = new javax.swing.JToggleButton();
         setGoalButton = new javax.swing.JToggleButton();
-        choicePanel = new javax.swing.JPanel();
-        graphAlgorithmChooser = new javax.swing.JComboBox<>();
-        pathAlgorithmChooser = new javax.swing.JComboBox<>();
+        filler2 = new javax.swing.Box.Filler(new java.awt.Dimension(15, 0), new java.awt.Dimension(15, 0), new java.awt.Dimension(15, 32767));
+        searchButton = new javax.swing.JButton();
         canvasPanel = new javax.swing.JPanel();
         canvas = new pathfinder.Canvas();
 
@@ -74,9 +79,27 @@ public class MainFrame extends javax.swing.JFrame {
         setTitle("PathFinder");
         setFocusable(false);
         setIconImages(null);
+        setMinimumSize(new java.awt.Dimension(500, 200));
         setName("MainFrame"); // NOI18N
+        setSize(new java.awt.Dimension(640, 480));
 
         controlPanel.setLayout(new javax.swing.BoxLayout(controlPanel, javax.swing.BoxLayout.Y_AXIS));
+
+        jLabel1.setText("Pathfinding Algorithm");
+        choicePanel.add(jLabel1);
+
+        pathAlgorithmChooser.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "A*", "Dijkstra" }));
+        choicePanel.add(pathAlgorithmChooser);
+        choicePanel.add(filler3);
+
+        jLabel2.setText("Graph search algorithm");
+        choicePanel.add(jLabel2);
+
+        graphAlgorithmChooser.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Closest Neighbour", "Brute Force", "MST Kruskal" }));
+        graphAlgorithmChooser.setFocusable(false);
+        choicePanel.add(graphAlgorithmChooser);
+
+        controlPanel.add(choicePanel);
 
         clearButton.setText("clear");
         clearButton.setFocusPainted(false);
@@ -86,10 +109,7 @@ public class MainFrame extends javax.swing.JFrame {
         fileChooseButton.setActionCommand("filechoose");
         fileChooseButton.setFocusPainted(false);
         buttonPanel.add(fileChooseButton);
-
-        searchButton.setText("search");
-        searchButton.setFocusPainted(false);
-        buttonPanel.add(searchButton);
+        buttonPanel.add(filler1);
 
         panButton.setSelected(true);
         panButton.setText("pan");
@@ -103,40 +123,19 @@ public class MainFrame extends javax.swing.JFrame {
         setGoalButton.setText("set goal");
         setGoalButton.setFocusPainted(false);
         buttonPanel.add(setGoalButton);
+        buttonPanel.add(filler2);
+
+        searchButton.setFocusPainted(false);
+        searchButton.setLabel("GO!");
+        buttonPanel.add(searchButton);
 
         controlPanel.add(buttonPanel);
-
-        graphAlgorithmChooser.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Closest Neighbour", "Brute Force" }));
-        graphAlgorithmChooser.setFocusable(false);
-
-        pathAlgorithmChooser.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "A*", "Dijkstra" }));
-
-        javax.swing.GroupLayout choicePanelLayout = new javax.swing.GroupLayout(choicePanel);
-        choicePanel.setLayout(choicePanelLayout);
-        choicePanelLayout.setHorizontalGroup(
-            choicePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, choicePanelLayout.createSequentialGroup()
-                .addContainerGap(189, Short.MAX_VALUE)
-                .addComponent(pathAlgorithmChooser, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(64, 64, 64)
-                .addComponent(graphAlgorithmChooser, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(214, 214, 214))
-        );
-        choicePanelLayout.setVerticalGroup(
-            choicePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, choicePanelLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(choicePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(graphAlgorithmChooser, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(pathAlgorithmChooser, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap())
-        );
-
-        controlPanel.add(choicePanel);
 
         getContentPane().add(controlPanel, java.awt.BorderLayout.PAGE_START);
 
         canvasPanel.setLayout(new javax.swing.BoxLayout(canvasPanel, javax.swing.BoxLayout.LINE_AXIS));
+
+        canvas.setPreferredSize(new java.awt.Dimension(640, 450));
 
         javax.swing.GroupLayout canvasLayout = new javax.swing.GroupLayout(canvas);
         canvas.setLayout(canvasLayout);
@@ -146,7 +145,7 @@ public class MainFrame extends javax.swing.JFrame {
         );
         canvasLayout.setVerticalGroup(
             canvasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 406, Short.MAX_VALUE)
+            .addGap(0, 418, Short.MAX_VALUE)
         );
 
         canvasPanel.add(canvas);
@@ -169,7 +168,12 @@ public class MainFrame extends javax.swing.JFrame {
     public javax.swing.JButton clearButton;
     private javax.swing.JPanel controlPanel;
     public javax.swing.JButton fileChooseButton;
+    private javax.swing.Box.Filler filler1;
+    private javax.swing.Box.Filler filler2;
+    private javax.swing.Box.Filler filler3;
     public javax.swing.JComboBox<String> graphAlgorithmChooser;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     public javax.swing.JToggleButton panButton;
     public javax.swing.JComboBox<String> pathAlgorithmChooser;
     public javax.swing.JButton searchButton;

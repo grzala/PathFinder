@@ -5,6 +5,13 @@
  */
 package pathfinder;
 
+import graphfinding.BruteForce;
+import graphfinding.Salesman;
+import graphfinding.ClosestNeighbour;
+import graphfinding.Kruskal;
+import pathfinding.PathSearch;
+import pathfinding.DijkstraPath;
+import pathfinding.AStar;
 import java.awt.Color;
 import java.awt.Point;
 import java.awt.Rectangle;
@@ -43,9 +50,9 @@ public class Navigator {
         paths = new ArrayList<>();
         
         start.x = 47; start.y = 270;
-        goals.add(new Point(30, 40));
-        goals.add(new Point(140, 40));
-        goals.add(new Point(250, 40));
+        goals.add(new Point(280, 190));
+        goals.add(new Point(320, 250));
+        goals.add(new Point(260, 400));
         
         step = 6.f;
         
@@ -56,7 +63,8 @@ public class Navigator {
     
     public enum GraphAlgorithms {
         CLOSESTNEIGHBOUR,
-        BRUTEFORCE
+        BRUTEFORCE,
+        KRUSKAL
     }
     
     public enum PathAlgorithms {
@@ -82,6 +90,9 @@ public class Navigator {
                 break;
             case "bruteforce":
                 setGraphAlgorithm(GraphAlgorithms.BRUTEFORCE);
+                break;
+            case "mstkruskal":
+                setGraphAlgorithm(GraphAlgorithms.KRUSKAL);
                 break;
             default:
                 System.out.println("no such algorithm");
@@ -241,6 +252,10 @@ public class Navigator {
                 
             case BRUTEFORCE:
                 s = new BruteForce(ps, start, goals, obstacles, step);
+                break;
+                
+            case KRUSKAL:
+                s = new Kruskal(ps, start, goals, obstacles, step);
                 break;
                 
             default:

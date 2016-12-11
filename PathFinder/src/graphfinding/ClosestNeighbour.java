@@ -3,8 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package pathfinder;
+package graphfinding;
 
+import pathfinding.PathSearch;
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -47,6 +48,7 @@ public class ClosestNeighbour extends Salesman {
             currentNode = newNode;
             nodesVisited.add(currentNode);
         }
+        
         endTimeMeasurement();
         return paths;
     }
