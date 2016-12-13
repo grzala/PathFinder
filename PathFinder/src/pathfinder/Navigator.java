@@ -12,12 +12,9 @@ import graphfinding.Kruskal;
 import pathfinding.PathSearch;
 import pathfinding.DijkstraPath;
 import pathfinding.AStar;
-import java.awt.Color;
 import java.awt.Point;
 import java.awt.Rectangle;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 /**
  *
@@ -39,7 +36,7 @@ public class Navigator {
     
     private double graphTime, avgPathTime;
     
-    int imgres = 2; //pixels;
+    int imgres = 1; //pixels;
     float step;
     
     public Navigator() {
@@ -49,12 +46,13 @@ public class Navigator {
         additional = new ArrayList<>();
         paths = new ArrayList<>();
         
-        start.x = 47; start.y = 270;
-        goals.add(new Point(280, 190));
-        goals.add(new Point(320, 250));
-        goals.add(new Point(260, 400));
+        start.x = 200; start.y = 200;
+        goals.add(new Point(150, 150));
+        goals.add(new Point(150, 250));
+        goals.add(new Point(250, 150));
+        goals.add(new Point(250, 250));
         
-        step = 6.f;
+        step = 4.f;
         
         graphTime = 0; avgPathTime = 0;
         
@@ -223,8 +221,14 @@ public class Navigator {
     }
     
     public void setImage(String path) {
-        this.oc = new OccupancyGrid(path, imgres);
-        obstacles = new ArrayList<>(oc.getAsPoints());
+        if (path == null || path.equals("")) {
+            this.oc = null;
+            obstacles = new ArrayList<>();
+        } else {
+            this.oc = new OccupancyGrid(path, imgres);
+            obstacles = new ArrayList<>(oc.getAsPoints());
+            //additional = new ArrayList<>(obstacles); //for debug
+        }
     }
   
     public void performSearch() {

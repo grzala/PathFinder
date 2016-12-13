@@ -5,22 +5,17 @@
  */
 package pathfinder;
 
-import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.MouseInfo;
 import java.awt.Point;
-import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import javax.imageio.ImageIO;
-import javax.swing.SwingUtilities;
 
 /**
  *
@@ -83,9 +78,13 @@ public class Canvas extends javax.swing.JPanel {
     }
     
     public void setImage(String path) {
-        try {                
-          background = ImageIO.read(new File(path));
-        } catch (IOException ex) {}
+        if (path == null || path.equals("")) {
+            background = null;
+        } else {
+            try {                
+              background = ImageIO.read(new File(path));
+            } catch (IOException ex) {}
+        }
         
         repaint();
     }
@@ -117,7 +116,7 @@ public class Canvas extends javax.swing.JPanel {
         
         //additional
         for(Point p : additional) {
-            g2d.setColor(Color.BLACK);
+            g2d.setColor(Color.CYAN);
             int r = pointsize;
             g2d.fillOval(origin.x + (p.x-(r/2)), origin.y + (p.y-(r/2)), r, r);
             //g2d.drawString("x: " + p.x + " y: " + p.y, origin.x + p.x + 5, origin.y + p.y + 10);
@@ -143,7 +142,6 @@ public class Canvas extends javax.swing.JPanel {
         g2d.drawString("Total distance: " + totalDistance + "px", 10, 20);
         g2d.drawString("Graph search time: " + times[0] + "ms", 10, 35);
         g2d.drawString("Average path search time: " + times[1] + "ms", 10, 50);
-        
         
         
         Dimension d = getSize();

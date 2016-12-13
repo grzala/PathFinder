@@ -5,10 +5,8 @@
  */
 package pathfinder;
 
-import java.awt.Event;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import javax.swing.JFileChooser;
 import javax.swing.SwingUtilities;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -49,15 +47,23 @@ public class MainFrameController {
         });
         //fileChoose
         frame.fileChooseButton.addActionListener((ActionEvent evt) -> {
-            JFileChooser chooser = new JFileChooser(".");
-            FileNameExtensionFilter filter = new FileNameExtensionFilter("JPG & PNG Images", "jpg", "png");
-            chooser.setFileFilter(filter);
-            int returnVal = chooser.showOpenDialog(null);
-            if(returnVal == JFileChooser.APPROVE_OPTION) {
-                n.setImage(chooser.getSelectedFile().getPath());
-                canvas.setImage(chooser.getSelectedFile().getPath());
+            String path = null;
+            MapChooser mc = new MapChooser(frame);
+            int returned = mc.returnVal();
+            if (returned == MapChooser.CHOOSE) {
+                path = mc.getChoice();
+            } else if (returned == MapChooser.CUSTOM) {
+                JFileChooser chooser = new JFileChooser(".");
+                FileNameExtensionFilter filter = new FileNameExtensionFilter("JPG & PNG Images", "jpg", "png");
+                chooser.setFileFilter(filter);
+                int returnVal = chooser.showOpenDialog(null);
+                if(returnVal == JFileChooser.APPROVE_OPTION) 
+                    path = chooser.getSelectedFile().getPath();
             }
+            
             n.clear();
+            n.setImage(path);
+            canvas.setImage(path);
             repaint();
         });
         //search

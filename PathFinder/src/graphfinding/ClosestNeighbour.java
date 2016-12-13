@@ -8,7 +8,6 @@ package graphfinding;
 import pathfinding.PathSearch;
 import java.awt.Point;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 /**
  *
