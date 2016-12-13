@@ -6,17 +6,22 @@
 package pathfinder;
 
 import java.awt.event.WindowEvent;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Paths;
+import javax.imageio.ImageIO;
 import javax.swing.JDialog;
+import javax.swing.JFileChooser;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 public class MapChooser extends JDialog {
     /**
      * Creates new form MapChooser
      */
     
-    private String path;
+    private BufferedImage img;
     private int returnVal;
     
     public static final int CHOOSE = 1;
@@ -119,6 +124,8 @@ public class MapChooser extends JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void chooseButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chooseButtonActionPerformed
+        setVisible(false);
+        
         String name = null;
         if (bigMazeRadioButton.isSelected()) {
             name = "bigmaze.jpg";
@@ -127,19 +134,31 @@ public class MapChooser extends JDialog {
         } else if (obstaclesRadioButton.isSelected()) {
             name = "obstacles.jpg";
         } else if (customMapRadioButton.isSelected()) {
-            returnVal = CUSTOM;
+            returnVal = CHOOSE;
+            JFileChooser chooser = new JFileChooser(".");
+            FileNameExtensionFilter filter = new FileNameExtensionFilter("JPG & PNG Images", "jpg", "png");
+            chooser.setFileFilter(filter);
+            int returnVal = chooser.showOpenDialog(null);
+            try {
+                if(returnVal == JFileChooser.APPROVE_OPTION) 
+                    img = ImageIO.read(chooser.getSelectedFile());
+            } catch(IOException e) {
+                img = null;
+            }
             close();
             return;
         } else if (noMapRadioButton.isSelected()) {
-            name = null;
+            returnVal = CHOOSE;
+            img = null;
+            close();
+            return;
         }
         
         try {
-            if (name == null || name.equals("")) throw new URISyntaxException("no name", "error");
-            URL url = getClass().getResource("/resources/" + name);
-            path =  Paths.get(url.toURI()).toString();
-        } catch (URISyntaxException e) {
-            path = null;
+            if (name == null || name.equals("")) throw new IOException();
+            img = ImageIO.read(getClass().getResource("/resources/" + name));
+        } catch (IOException e) {
+            img = null;
         }
         
         returnVal = CHOOSE;
@@ -155,8 +174,8 @@ public class MapChooser extends JDialog {
         dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
     }
     
-    public String getChoice() {
-        return path;
+    public BufferedImage getChoice() {
+        return img;
     }
     
     public int returnVal() {

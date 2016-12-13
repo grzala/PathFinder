@@ -77,14 +77,8 @@ public class Canvas extends javax.swing.JPanel {
         return origin;
     }
     
-    public void setImage(String path) {
-        if (path == null || path.equals("")) {
-            background = null;
-        } else {
-            try {                
-              background = ImageIO.read(new File(path));
-            } catch (IOException ex) {}
-        }
+    public void setImage(BufferedImage img) {           
+        background = img;
         
         repaint();
     }

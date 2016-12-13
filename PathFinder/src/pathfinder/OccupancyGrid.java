@@ -23,20 +23,15 @@ class OccupancyGrid {
     int originX, originY;
     int width, height;
     
-    public OccupancyGrid(String path, int resolution) {
+    public OccupancyGrid(BufferedImage img, int resolution) {
         oc = new ArrayList<>();
         this.res = resolution;
         originX = 0; originY = 0;
         
-        try {
-            interpretImg(path);            
-        } catch (IOException e) {
-        } 
+        interpretImg(img);
     }
     
-    private void interpretImg(String path) throws IOException {
-        BufferedImage img = ImageIO.read(new File(path));
-        
+    private void interpretImg(BufferedImage img) {
         int w = img.getWidth(); int h = img.getHeight();
         this.width = w; this.height = h;
         

@@ -14,6 +14,7 @@ import pathfinding.DijkstraPath;
 import pathfinding.AStar;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
 /**
@@ -220,12 +221,12 @@ public class Navigator {
         return d;
     }
     
-    public void setImage(String path) {
-        if (path == null || path.equals("")) {
+    public void setImage(BufferedImage img) {
+        if (img == null) {
             this.oc = null;
             obstacles = new ArrayList<>();
         } else {
-            this.oc = new OccupancyGrid(path, imgres);
+            this.oc = new OccupancyGrid(img, imgres);
             obstacles = new ArrayList<>(oc.getAsPoints());
             //additional = new ArrayList<>(obstacles); //for debug
         }

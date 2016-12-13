@@ -7,9 +7,8 @@ package pathfinder;
 
 import java.awt.Point;
 import java.awt.event.ActionEvent;
-import javax.swing.JFileChooser;
+import java.awt.image.BufferedImage;
 import javax.swing.SwingUtilities;
-import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
  *
@@ -47,23 +46,16 @@ public class MainFrameController {
         });
         //fileChoose
         frame.fileChooseButton.addActionListener((ActionEvent evt) -> {
-            String path = null;
+            BufferedImage img = null;
             MapChooser mc = new MapChooser(frame);
             int returned = mc.returnVal();
-            if (returned == MapChooser.CHOOSE) {
-                path = mc.getChoice();
-            } else if (returned == MapChooser.CUSTOM) {
-                JFileChooser chooser = new JFileChooser(".");
-                FileNameExtensionFilter filter = new FileNameExtensionFilter("JPG & PNG Images", "jpg", "png");
-                chooser.setFileFilter(filter);
-                int returnVal = chooser.showOpenDialog(null);
-                if(returnVal == JFileChooser.APPROVE_OPTION) 
-                    path = chooser.getSelectedFile().getPath();
-            }
+            if (returned == MapChooser.CHOOSE) 
+                img = mc.getChoice();
+            
             
             n.clear();
-            n.setImage(path);
-            canvas.setImage(path);
+            n.setImage(img);
+            canvas.setImage(img);
             repaint();
         });
         //search
