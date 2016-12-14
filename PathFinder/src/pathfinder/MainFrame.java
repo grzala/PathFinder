@@ -5,7 +5,12 @@
  */
 package pathfinder;
 
+import java.awt.Dimension;
+import java.awt.Image;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.net.URL;
+import javax.imageio.ImageIO;
 import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
 import javax.swing.UIManager;
@@ -39,8 +44,48 @@ public class MainFrame extends javax.swing.JFrame {
         URL iconURL = getClass().getResource("/resources/icon.png");
         ImageIcon icon = new ImageIcon(iconURL);
         setIconImage(icon.getImage());
+        setButtonIcons();
         
         canvas.requestFocus(true);
+    }
+    
+    private void setButtonIcons() {
+        try {
+            BufferedImage img = null;
+            Dimension dim = null;
+            Image dimg = null;
+            ImageIcon imageIcon = null;
+            
+            //start button
+            img = ImageIO.read(getClass().getResource("/resources/start.png"));
+            dim = setStartButton.getSize();
+            dimg = img.getScaledInstance(dim.width * 3/4, dim.height * 3/4, Image.SCALE_SMOOTH);
+            imageIcon = new ImageIcon(dimg);
+            setStartButton.setIcon(imageIcon);
+
+            //goal button
+            img = ImageIO.read(getClass().getResource("/resources/goal.png"));
+            dim = setGoalButton.getSize();
+            dimg = img.getScaledInstance(dim.width * 3/4, dim.height * 3/4, Image.SCALE_SMOOTH);
+            imageIcon = new ImageIcon(dimg);
+            setGoalButton.setIcon(imageIcon);
+            
+            //pan button
+            img = ImageIO.read(getClass().getResource("/resources/pan.png"));
+            dim = panButton.getSize();
+            dimg = img.getScaledInstance(dim.width * 3/4, dim.height * 3/4, Image.SCALE_SMOOTH);
+            imageIcon = new ImageIcon(dimg);
+            panButton.setIcon(imageIcon);
+            
+            //clear button
+            img = ImageIO.read(getClass().getResource("/resources/clear.png"));
+            dim = clearButton.getSize();
+            dimg = img.getScaledInstance(dim.width * 3/4, dim.height * 3/4, Image.SCALE_SMOOTH);
+            imageIcon = new ImageIcon(dimg);
+            clearButton.setIcon(imageIcon);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
     
     public Canvas getCanvas() {
@@ -64,12 +109,12 @@ public class MainFrame extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         graphAlgorithmChooser = new javax.swing.JComboBox<>();
         buttonPanel = new javax.swing.JPanel();
-        clearButton = new javax.swing.JButton();
-        fileChooseButton = new javax.swing.JButton();
+        mapChooseButton = new javax.swing.JButton();
         filler1 = new javax.swing.Box.Filler(new java.awt.Dimension(40, 0), new java.awt.Dimension(40, 0), new java.awt.Dimension(40, 32767));
         panButton = new javax.swing.JToggleButton();
         setStartButton = new javax.swing.JToggleButton();
         setGoalButton = new javax.swing.JToggleButton();
+        clearButton = new javax.swing.JButton();
         filler2 = new javax.swing.Box.Filler(new java.awt.Dimension(15, 0), new java.awt.Dimension(15, 0), new java.awt.Dimension(15, 32767));
         searchButton = new javax.swing.JButton();
         canvasPanel = new javax.swing.JPanel();
@@ -101,28 +146,40 @@ public class MainFrame extends javax.swing.JFrame {
 
         controlPanel.add(choicePanel);
 
-        clearButton.setText("clear");
-        clearButton.setFocusPainted(false);
-        buttonPanel.add(clearButton);
-
-        fileChooseButton.setText("File");
-        fileChooseButton.setActionCommand("filechoose");
-        fileChooseButton.setFocusPainted(false);
-        buttonPanel.add(fileChooseButton);
+        mapChooseButton.setText("Choose map");
+        mapChooseButton.setActionCommand("filechoose");
+        mapChooseButton.setFocusPainted(false);
+        buttonPanel.add(mapChooseButton);
         buttonPanel.add(filler1);
 
         panButton.setSelected(true);
-        panButton.setText("pan");
+        panButton.setToolTipText("Pan: click to move around the map");
         panButton.setFocusPainted(false);
+        panButton.setMaximumSize(null);
+        panButton.setMinimumSize(null);
+        panButton.setPreferredSize(new java.awt.Dimension(22, 22));
         buttonPanel.add(panButton);
 
-        setStartButton.setText("set start");
+        setStartButton.setToolTipText("Set Start: left click to move start point on the map");
         setStartButton.setFocusPainted(false);
+        setStartButton.setMaximumSize(null);
+        setStartButton.setMinimumSize(null);
+        setStartButton.setPreferredSize(new java.awt.Dimension(22, 22));
         buttonPanel.add(setStartButton);
 
-        setGoalButton.setText("set goal");
+        setGoalButton.setToolTipText("Set Goals: left click to add a goal, right click to remove last added goal");
         setGoalButton.setFocusPainted(false);
+        setGoalButton.setMaximumSize(null);
+        setGoalButton.setMinimumSize(null);
+        setGoalButton.setPreferredSize(new java.awt.Dimension(22, 22));
         buttonPanel.add(setGoalButton);
+
+        clearButton.setToolTipText("Clear: click to remove all goals");
+        clearButton.setFocusPainted(false);
+        clearButton.setMaximumSize(null);
+        clearButton.setMinimumSize(null);
+        clearButton.setPreferredSize(new java.awt.Dimension(22, 22));
+        buttonPanel.add(clearButton);
         buttonPanel.add(filler2);
 
         searchButton.setFocusPainted(false);
@@ -167,13 +224,13 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JPanel choicePanel;
     public javax.swing.JButton clearButton;
     private javax.swing.JPanel controlPanel;
-    public javax.swing.JButton fileChooseButton;
     private javax.swing.Box.Filler filler1;
     private javax.swing.Box.Filler filler2;
     private javax.swing.Box.Filler filler3;
     public javax.swing.JComboBox<String> graphAlgorithmChooser;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    public javax.swing.JButton mapChooseButton;
     public javax.swing.JToggleButton panButton;
     public javax.swing.JComboBox<String> pathAlgorithmChooser;
     public javax.swing.JButton searchButton;

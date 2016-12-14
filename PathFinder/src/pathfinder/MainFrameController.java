@@ -45,7 +45,7 @@ public class MainFrameController {
             repaint();
         });
         //fileChoose
-        frame.fileChooseButton.addActionListener((ActionEvent evt) -> {
+        frame.mapChooseButton.addActionListener((ActionEvent evt) -> {
             BufferedImage img = null;
             MapChooser mc = new MapChooser(frame);
             int returned = mc.returnVal();

@@ -53,7 +53,7 @@ public class Navigator {
         goals.add(new Point(250, 150));
         goals.add(new Point(250, 250));
         
-        step = 4.f;
+        step = 5.f;
         
         graphTime = 0; avgPathTime = 0;
         

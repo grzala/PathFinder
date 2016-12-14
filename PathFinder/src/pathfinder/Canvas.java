@@ -6,16 +6,17 @@
 package pathfinder;
 
 import java.awt.Color;
+import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.text.NumberFormat;
 import java.util.ArrayList;
-import javax.imageio.ImageIO;
 
 /**
  *
@@ -132,11 +133,14 @@ public class Canvas extends javax.swing.JPanel {
         //g2d.setStroke(new BasicStroke(1));
         
         g2d.setColor(Color.BLACK);
+        DecimalFormatSymbols otherSymbols = new DecimalFormatSymbols();
+        otherSymbols.setDecimalSeparator('.');
+        otherSymbols.setGroupingSeparator(','); 
+        DecimalFormat formatter = new DecimalFormat("#0.0##", otherSymbols); 
         float totalDistance = Navigator.calculateTotalDistance(lines);
-        g2d.drawString("Total distance: " + totalDistance + "px", 10, 20);
-        g2d.drawString("Graph search time: " + times[0] + "ms", 10, 35);
-        g2d.drawString("Average path search time: " + times[1] + "ms", 10, 50);
-        
+        g2d.drawString("Total distance: " + formatter.format(totalDistance) + "px", 10, 20);
+        g2d.drawString("Graph search time: " + formatter.format(times[0]) + "ms", 10, 35);
+        g2d.drawString("Average path search time: " + formatter.format(times[1]) + "ms", 10, 50);
         
         Dimension d = getSize();
         g2d.setColor(Color.RED);
@@ -162,6 +166,12 @@ public class Canvas extends javax.swing.JPanel {
             }
         });
         addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                formMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                formMouseExited(evt);
+            }
             public void mousePressed(java.awt.event.MouseEvent evt) {
                 formMousePressed(evt);
             }
@@ -192,6 +202,15 @@ public class Canvas extends javax.swing.JPanel {
     private void formMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMousePressed
         mousept = evt.getPoint();
     }//GEN-LAST:event_formMousePressed
+
+    private void formMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMouseEntered
+        if (mode == Mode.PAN)
+            setCursor(new Cursor(Cursor.MOVE_CURSOR));
+    }//GEN-LAST:event_formMouseEntered
+
+    private void formMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMouseExited
+        setCursor(Cursor.getDefaultCursor());
+    }//GEN-LAST:event_formMouseExited
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
