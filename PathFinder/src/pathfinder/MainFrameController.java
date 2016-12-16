@@ -5,6 +5,7 @@
  */
 package pathfinder;
 
+import java.awt.Cursor;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.image.BufferedImage;
@@ -60,11 +61,16 @@ public class MainFrameController {
         });
         //search
         frame.searchButton.addActionListener((ActionEvent evt) -> {
+            frame.setCursor(new Cursor(Cursor.WAIT_CURSOR));
             String graphAlgorithm = String.valueOf(frame.graphAlgorithmChooser.getSelectedItem());
             String pathAlgorithm = String.valueOf(frame.pathAlgorithmChooser.getSelectedItem());
             n.setGraphAlgorithm(graphAlgorithm);
             n.setPathAlgorithm(pathAlgorithm);
+            
+            frame.setCursor(new Cursor(Cursor.WAIT_CURSOR));
             n.performSearch();
+            frame.setCursor(Cursor.getDefaultCursor());
+            
             repaint();
         });
         //pan

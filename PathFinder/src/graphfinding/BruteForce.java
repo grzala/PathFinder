@@ -28,13 +28,13 @@ public class BruteForce extends Salesman {
         ArrayList<Node> Q = new ArrayList<>(nodes);
         
         //find all paths O(n^2)
-        for (Node n : Q) {
+        for (Node n1 : Q) {
             for (Node n2 : Q) {
-                if (n != n2) {
+                if (n1 != n2) {
                     double t = System.nanoTime(); //search time
-                    ps.reset(n.getNode(), n2.getNode(), obstacles, (int)step);
+                    ps.reset(n1.getNode(), n2.getNode(), obstacles, (int)step);
                     ps.performSearch();
-                    n.addEdge(n2, ps.getPath(), ps.getCost());
+                    n1.addEdge(n2, ps.getPath(), ps.getCost());
                     pathTimes.add(System.nanoTime() - t);
                 }
             }

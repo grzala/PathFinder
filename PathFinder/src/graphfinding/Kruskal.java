@@ -30,40 +30,34 @@ public class Kruskal extends Salesman {
         
         //find all paths O(n^2)
         HashMap<Float, ArrayList<Salesman.Node[]>> graph = new HashMap<>();
-        for (Node n : Q) {
+        for (Node n1 : Q) {
             for (Node n2 : Q) {
-                if (n == n2) continue; //not for the same ones
+                if (n1 == n2) continue; //not for the same ones
                 
                 //path search
                 double t = System.nanoTime(); //search time
-                ps.reset(n.getNode(), n2.getNode(), obstacles, (int)step);
+                ps.reset(n1.getNode(), n2.getNode(), obstacles, (int)step);
                 ps.performSearch();
-                n.addEdge(n2, ps.getPath(), ps.getCost());
+                n1.addEdge(n2, ps.getPath(), ps.getCost());
                 pathTimes.add(System.nanoTime() - t);
-                Node[] nn = new Node[] {n, n2};
-                float distance = (float) (Math.round(n.getDistance(n2) * 10000.0) / 10000.0); // round a bit to prevent duplicates
+                Node[] nn = new Node[] {n1, n2};
+                float distance = (float) (Math.round(n1.getDistance(n2) * 10000.0) / 10000.0); // round a bit to prevent duplicates
 
                 if (graph.get(distance) == null) graph.put(distance, new ArrayList<Salesman.Node[]>()); //prevent nullPointerException
-
+                
+                /* seems unnecessary, leaving commented if errors happen in the future, uncomment
                 //does graphs already contain this edge?
                 boolean contains = false;
                 for (Node [] ar : graph.get(distance)) {
-                    if ((ar[0] == n && ar[1] == n2) || (ar[0] == n2 && ar[1] == n)) {
+                    if ((ar[0] == n1 && ar[1] == n2) || (ar[0] == n2 && ar[1] == n1)) {
                         contains = true;
                         break;
                     }
-                }
-                if (!contains) //add if not yet in graph
+                } 
+                */
+                
+                //if (!contains) //add if not yet in graph
                     graph.get(distance).add(nn);
-            }
-        }
-        
-        // <distance, nodes>
-        for (Node n : Q) {
-            for (Node n2 : Q) {
-                if (n == n2) continue;
-                
-                
             }
         }
         

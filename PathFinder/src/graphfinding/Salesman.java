@@ -79,34 +79,25 @@ public abstract class Salesman {
     
     protected class Node {
         private Point node;
+        private ArrayList<Node> neighbours;
         private HashMap<Node, Float> distances;
         private HashMap<Node, ArrayList<Point>> paths;
-        
-        private boolean dummy;
         
         public Node(Point pos) {
             node = pos;
             distances = new HashMap<>();
             paths = new HashMap<>();
-            dummy = false;
-        }
-        
-        public Node(Point pos, boolean dummy) {
-            this(pos);
-            this.dummy = dummy;
+            neighbours = new ArrayList<>();
         }
         
         public Point getNode() {
             return node;
         }
         
-        public boolean isDummy() {
-            return dummy;
-        }
-        
         public void addEdge(Node targetNode, ArrayList<Point> path, float distance) {
             distances.put(targetNode, distance);
             paths.put(targetNode, path);
+            neighbours.add(targetNode);
         }
         
         public boolean hasEdge(Node n) {
@@ -114,8 +105,6 @@ public abstract class Salesman {
         }
         
         public float getDistance(Node n) {
-            if (n.isDummy() || this.isDummy())
-                return 0.f;
             return distances.get(n);
         }
         
@@ -142,6 +131,10 @@ public abstract class Salesman {
         
         public String toString() {
             return this.node.toString();
+        }
+        
+        public ArrayList<Node> getNeighbours() {
+            return neighbours;
         }
     }
 }

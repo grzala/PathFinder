@@ -140,7 +140,7 @@ public class MainFrame extends javax.swing.JFrame {
         jLabel2.setText("Graph search algorithm");
         choicePanel.add(jLabel2);
 
-        graphAlgorithmChooser.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Closest Neighbour", "Brute Force", "MST Kruskal" }));
+        graphAlgorithmChooser.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Closest Neighbour", "Brute Force", "MST Kruskal", "MST Prim", "None" }));
         graphAlgorithmChooser.setFocusable(false);
         choicePanel.add(graphAlgorithmChooser);
 

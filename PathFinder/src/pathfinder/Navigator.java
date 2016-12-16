@@ -9,6 +9,8 @@ import graphfinding.BruteForce;
 import graphfinding.Salesman;
 import graphfinding.ClosestNeighbour;
 import graphfinding.Kruskal;
+import graphfinding.Order;
+import graphfinding.Prim;
 import pathfinding.PathSearch;
 import pathfinding.DijkstraPath;
 import pathfinding.AStar;
@@ -16,6 +18,7 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+import java.util.Random;
 
 /**
  *
@@ -63,7 +66,9 @@ public class Navigator {
     public enum GraphAlgorithms {
         CLOSESTNEIGHBOUR,
         BRUTEFORCE,
-        KRUSKAL
+        KRUSKAL,
+        PRIM,
+        NONE
     }
     
     public enum PathAlgorithms {
@@ -92,6 +97,12 @@ public class Navigator {
                 break;
             case "mstkruskal":
                 setGraphAlgorithm(GraphAlgorithms.KRUSKAL);
+                break;
+            case "mstprim":
+                setGraphAlgorithm(GraphAlgorithms.PRIM);
+                break;
+            case "none":
+                setGraphAlgorithm(GraphAlgorithms.NONE);
                 break;
             default:
                 System.out.println("no such algorithm");
@@ -230,6 +241,17 @@ public class Navigator {
             obstacles = new ArrayList<>(oc.getAsPoints());
             //additional = new ArrayList<>(obstacles); //for debug
         }
+        
+        
+        while (!canAdd(start.x, start.y)) {
+            int minx = 0; int miny = 0;
+            int maxx = getSize()[0]; int maxy = getSize()[1];
+            Random r = new Random();
+            int x = r.nextInt((maxx - minx) + 1) + minx;
+            int y = r.nextInt((maxy - miny) + 1) + miny;
+            
+            start = new Point(x, y);
+        }
     }
   
     public void performSearch() {
@@ -261,6 +283,14 @@ public class Navigator {
                 
             case KRUSKAL:
                 s = new Kruskal(ps, start, goals, obstacles, step);
+                break;
+                
+            case PRIM:
+                s = new Prim(ps, start, goals, obstacles, step);
+                break;
+                
+            case NONE:
+                s = new Order(ps, start, goals, obstacles, step);
                 break;
                 
             default:
