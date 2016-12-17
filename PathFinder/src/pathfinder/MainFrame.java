@@ -101,6 +101,7 @@ public class MainFrame extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        mapGroup = new javax.swing.ButtonGroup();
         controlPanel = new javax.swing.JPanel();
         choicePanel = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
@@ -109,8 +110,6 @@ public class MainFrame extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         graphAlgorithmChooser = new javax.swing.JComboBox<>();
         buttonPanel = new javax.swing.JPanel();
-        mapChooseButton = new javax.swing.JButton();
-        filler1 = new javax.swing.Box.Filler(new java.awt.Dimension(40, 0), new java.awt.Dimension(40, 0), new java.awt.Dimension(40, 32767));
         panButton = new javax.swing.JToggleButton();
         setStartButton = new javax.swing.JToggleButton();
         setGoalButton = new javax.swing.JToggleButton();
@@ -119,6 +118,16 @@ public class MainFrame extends javax.swing.JFrame {
         searchButton = new javax.swing.JButton();
         canvasPanel = new javax.swing.JPanel();
         canvas = new pathfinder.Canvas();
+        jMenuBar = new javax.swing.JMenuBar();
+        mapMenu = new javax.swing.JMenu();
+        bigMazeMenuItem = new javax.swing.JCheckBoxMenuItem();
+        circleMazeMenuItem = new javax.swing.JCheckBoxMenuItem();
+        obstaclesMenuItem = new javax.swing.JCheckBoxMenuItem();
+        customMenuItem = new javax.swing.JCheckBoxMenuItem();
+        noMapMenuItem = new javax.swing.JCheckBoxMenuItem();
+        moreMenu = new javax.swing.JMenu();
+        randomGoals1 = new javax.swing.JMenuItem();
+        randomGoals2 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("PathFinder");
@@ -133,7 +142,7 @@ public class MainFrame extends javax.swing.JFrame {
         jLabel1.setText("Pathfinding Algorithm");
         choicePanel.add(jLabel1);
 
-        pathAlgorithmChooser.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "A*", "Dijkstra" }));
+        pathAlgorithmChooser.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "A*", "Dijkstra", "Heuristic search" }));
         choicePanel.add(pathAlgorithmChooser);
         choicePanel.add(filler3);
 
@@ -145,12 +154,6 @@ public class MainFrame extends javax.swing.JFrame {
         choicePanel.add(graphAlgorithmChooser);
 
         controlPanel.add(choicePanel);
-
-        mapChooseButton.setText("Choose map");
-        mapChooseButton.setActionCommand("filechoose");
-        mapChooseButton.setFocusPainted(false);
-        buttonPanel.add(mapChooseButton);
-        buttonPanel.add(filler1);
 
         panButton.setSelected(true);
         panButton.setToolTipText("Pan: click to move around the map");
@@ -202,12 +205,51 @@ public class MainFrame extends javax.swing.JFrame {
         );
         canvasLayout.setVerticalGroup(
             canvasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 418, Short.MAX_VALUE)
+            .addGap(0, 397, Short.MAX_VALUE)
         );
 
         canvasPanel.add(canvas);
 
         getContentPane().add(canvasPanel, java.awt.BorderLayout.CENTER);
+
+        mapMenu.setText("Map");
+
+        mapGroup.add(bigMazeMenuItem);
+        bigMazeMenuItem.setText("Big maze");
+        mapMenu.add(bigMazeMenuItem);
+
+        mapGroup.add(circleMazeMenuItem);
+        circleMazeMenuItem.setText("Circle maze");
+        mapMenu.add(circleMazeMenuItem);
+
+        mapGroup.add(obstaclesMenuItem);
+        obstaclesMenuItem.setText("Obstacles");
+        mapMenu.add(obstaclesMenuItem);
+
+        mapGroup.add(customMenuItem);
+        customMenuItem.setText("Custom map");
+        mapMenu.add(customMenuItem);
+
+        mapGroup.add(noMapMenuItem);
+        noMapMenuItem.setSelected(true);
+        noMapMenuItem.setText("No map");
+        mapMenu.add(noMapMenuItem);
+
+        jMenuBar.add(mapMenu);
+
+        moreMenu.setText("More");
+
+        randomGoals1.setText("30 random goals");
+        randomGoals1.setToolTipText("This may cause poor performance. This is because obstacles are kept as an array and itakes O(n) each path step, but saves memory. This will be changed in the future");
+        moreMenu.add(randomGoals1);
+
+        randomGoals2.setText("70 random goals");
+        randomGoals2.setToolTipText("Dont' use this on maps with obstacles!");
+        moreMenu.add(randomGoals2);
+
+        jMenuBar.add(moreMenu);
+
+        setJMenuBar(jMenuBar);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -218,21 +260,30 @@ public class MainFrame extends javax.swing.JFrame {
     }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    public javax.swing.JCheckBoxMenuItem bigMazeMenuItem;
     private javax.swing.JPanel buttonPanel;
     private pathfinder.Canvas canvas;
     private javax.swing.JPanel canvasPanel;
     private javax.swing.JPanel choicePanel;
+    public javax.swing.JCheckBoxMenuItem circleMazeMenuItem;
     public javax.swing.JButton clearButton;
     private javax.swing.JPanel controlPanel;
-    private javax.swing.Box.Filler filler1;
+    public javax.swing.JCheckBoxMenuItem customMenuItem;
     private javax.swing.Box.Filler filler2;
     private javax.swing.Box.Filler filler3;
     public javax.swing.JComboBox<String> graphAlgorithmChooser;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    public javax.swing.JButton mapChooseButton;
+    private javax.swing.JMenuBar jMenuBar;
+    private javax.swing.ButtonGroup mapGroup;
+    private javax.swing.JMenu mapMenu;
+    public javax.swing.JMenu moreMenu;
+    public javax.swing.JCheckBoxMenuItem noMapMenuItem;
+    public javax.swing.JCheckBoxMenuItem obstaclesMenuItem;
     public javax.swing.JToggleButton panButton;
     public javax.swing.JComboBox<String> pathAlgorithmChooser;
+    public javax.swing.JMenuItem randomGoals1;
+    public javax.swing.JMenuItem randomGoals2;
     public javax.swing.JButton searchButton;
     public javax.swing.JToggleButton setGoalButton;
     public javax.swing.JToggleButton setStartButton;

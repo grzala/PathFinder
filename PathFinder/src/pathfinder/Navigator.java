@@ -19,6 +19,7 @@ import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Random;
+import pathfinding.HeuristicSearch;
 
 /**
  *
@@ -56,7 +57,7 @@ public class Navigator {
         goals.add(new Point(250, 150));
         goals.add(new Point(250, 250));
         
-        step = 5.f;
+        step = 6.f;
         
         graphTime = 0; avgPathTime = 0;
         
@@ -73,7 +74,8 @@ public class Navigator {
     
     public enum PathAlgorithms {
         ASTAR,
-        DIJKSTRA
+        DIJKSTRA,
+        HEURISTIC
     }
     
     public void setGraphAlgorithm(GraphAlgorithms g) {
@@ -120,6 +122,9 @@ public class Navigator {
             case "dijkstra":
                 setPathAlgorithm(PathAlgorithms.DIJKSTRA);
                 break;
+            case "heuristicsearch":
+                setPathAlgorithm(PathAlgorithms.HEURISTIC);
+                break;
             default:
                 System.out.println("no such algorithm");
         }
@@ -165,13 +170,27 @@ public class Navigator {
     
     private boolean canAdd(int x, int y) {
         boolean add = true;
+        
+        //on obstacle?
         for (Point o : obstacles) {
+            int step = (int)(this.step*1.5f); // some more space to prevent errors
             Rectangle rect = new Rectangle(x - (int)step, y - (int)step, (int)step, (int)step);
             if (rect.contains(o)) {
                 add = false;
                 break;
             }
         }
+        
+        //on map?
+        int xx = getSize()[0];
+        int yy = getSize()[1];
+        if (yy > 0 && xx > 0) {
+            if (x < 0 || x > xx)
+                add = false;
+            if (y < 0 || y > yy)
+                add = false;
+        }
+        
         return add;
     }
     
@@ -200,7 +219,6 @@ public class Navigator {
             goals.add(new Point(x, y));
             return true;
         } else {
-            System.out.println("Can't add goal: to close to an obstacle");
             return false;
         }
     }
@@ -266,6 +284,10 @@ public class Navigator {
                 ps = new DijkstraPath();
                 break;
                 
+            case HEURISTIC:
+                ps = new HeuristicSearch();
+                break;
+                
             default:
                 System.out.println("ERROR");
                 break;
@@ -308,6 +330,32 @@ public class Navigator {
             
         int[] ar = {oc.width, oc.height};
         return ar;
+    }
+    
+    public void generateRandomGoals(int n, int[] frameSize) {
+        int minx = 0; int miny = 0;
+        int maxx = getSize()[0]; int maxy = getSize()[1];
+        if (maxx == 0 || maxy == 0) {
+            maxx = frameSize[0]; maxy = frameSize[0];
+        }
+        
+        goals.clear();
+        Random r = new Random();
+        
+        for (int i = 0; i < n; i++) {
+            int x = r.nextInt((maxx - minx) + 1) + minx;
+            int y = r.nextInt((maxy - miny) + 1) + miny;
+            Point p = new Point(x, y);
+            
+            while (!canAdd(x, y) || goals.contains(p)) {
+                x = r.nextInt((maxx - minx) + 1) + minx;
+                y = r.nextInt((maxy - miny) + 1) + miny;
+                p = new Point(x, y);
+            }
+                
+            goals.add(p);
+            
+        }
     }
     
 }

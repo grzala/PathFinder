@@ -8,8 +8,14 @@ package pathfinder;
 import java.awt.Cursor;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.awt.image.BufferedImage;
+import java.io.IOException;
+import javax.imageio.ImageIO;
+import javax.swing.JFileChooser;
 import javax.swing.SwingUtilities;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
  *
@@ -43,20 +49,6 @@ public class MainFrameController {
         //clear
         frame.clearButton.addActionListener((ActionEvent evt) -> {
             n.clear();
-            repaint();
-        });
-        //fileChoose
-        frame.mapChooseButton.addActionListener((ActionEvent evt) -> {
-            BufferedImage img = null;
-            MapChooser mc = new MapChooser(frame);
-            int returned = mc.returnVal();
-            if (returned == MapChooser.CHOOSE) 
-                img = mc.getChoice();
-            
-            
-            n.clear();
-            n.setImage(img);
-            canvas.setImage(img);
             repaint();
         });
         //search
@@ -103,6 +95,30 @@ public class MainFrameController {
                 repaint();
             }
         });
+        
+        //map menu
+        MapMenuListener ml = new MapMenuListener();
+        frame.bigMazeMenuItem.addItemListener(ml);
+        frame.circleMazeMenuItem.addItemListener(ml);
+        frame.obstaclesMenuItem.addItemListener(ml);
+        frame.customMenuItem.addItemListener(ml);
+        frame.noMapMenuItem.addItemListener(ml);
+        
+        //more menu
+        frame.randomGoals1.addActionListener((ActionEvent evt) -> {
+            int[] size = new int[2];
+            size[0] = canvas.getSize().width;
+            size[1] = canvas.getSize().height;
+            n.generateRandomGoals(30, size);
+            repaint();
+        });
+        frame.randomGoals2.addActionListener((ActionEvent evt) -> {
+            int[] size = new int[2];
+            size[0] = canvas.getSize().width;
+            size[1] = canvas.getSize().height;
+            n.generateRandomGoals(70, size);
+            repaint();
+        });
     }
     
     private void repaint() {
@@ -113,6 +129,43 @@ public class MainFrameController {
         canvas.times = n.getTimes();
         canvas.additional = n.getAdditional();
         canvas.repaint();
+    }
+    
+    private class MapMenuListener implements ItemListener {
+        
+         //map menu item changed
+        @Override
+        public void itemStateChanged(ItemEvent e) {
+            try {
+            if (e.getStateChange() == ItemEvent.SELECTED) {
+
+                BufferedImage img = null;
+
+                Object source = e.getItemSelectable();
+                if (source == frame.bigMazeMenuItem) {
+                    img = ImageIO.read(getClass().getResource("/resources/bigmaze.jpg"));
+                } else if (source == frame.circleMazeMenuItem) {
+                    img = ImageIO.read(getClass().getResource("/resources/circlemaze.jpg"));
+                } else if (source == frame.obstaclesMenuItem) {
+                    img = ImageIO.read(getClass().getResource("/resources/obstacles.jpg"));
+                } else if (source == frame.customMenuItem) {
+                    JFileChooser chooser = new JFileChooser(".");
+                    FileNameExtensionFilter filter = new FileNameExtensionFilter("JPG & PNG Images", "jpg", "png");
+                    chooser.setFileFilter(filter);
+                    int returnVal = chooser.showOpenDialog(null);
+                    if(returnVal == JFileChooser.APPROVE_OPTION) 
+                        img = ImageIO.read(chooser.getSelectedFile());
+                } else if (source == frame.noMapMenuItem) {
+                   img = null;
+                }
+
+                n.clear();
+                n.setImage(img);
+                frame.getCanvas().setImage(img);
+                repaint();
+            }
+            } catch (IOException ex) {}
+        }
     }
     
 }
