@@ -8,6 +8,7 @@ package pathfinder;
 import graphfinding.BruteForce;
 import graphfinding.Salesman;
 import graphfinding.ClosestNeighbour;
+import graphfinding.Greedy;
 import graphfinding.Kruskal;
 import graphfinding.Order;
 import graphfinding.Prim;
@@ -69,7 +70,8 @@ public class Navigator {
         BRUTEFORCE,
         KRUSKAL,
         PRIM,
-        NONE
+        NONE,
+        GREEDY
     }
     
     public enum PathAlgorithms {
@@ -105,6 +107,9 @@ public class Navigator {
                 break;
             case "none":
                 setGraphAlgorithm(GraphAlgorithms.NONE);
+                break;
+            case "greedy":
+                setGraphAlgorithm(GraphAlgorithms.GREEDY);
                 break;
             default:
                 System.out.println("no such algorithm");
@@ -173,8 +178,7 @@ public class Navigator {
         
         //on obstacle?
         for (Point o : obstacles) {
-            int step = (int)(this.step*1.5f); // some more space to prevent errors
-            Rectangle rect = new Rectangle(x - (int)step, y - (int)step, (int)step, (int)step);
+            Rectangle rect = new Rectangle(x - (int)step/2, y - (int)step/2, (int)step, (int)step);
             if (rect.contains(o)) {
                 add = false;
                 break;
@@ -260,7 +264,6 @@ public class Navigator {
             //additional = new ArrayList<>(obstacles); //for debug
         }
         
-        
         while (!canAdd(start.x, start.y)) {
             int minx = 0; int miny = 0;
             int maxx = getSize()[0]; int maxy = getSize()[1];
@@ -314,6 +317,10 @@ public class Navigator {
             case NONE:
                 s = new Order(ps, start, goals, obstacles, step);
                 break;
+            
+            case GREEDY:
+                s = new Greedy(ps, start, goals, obstacles, step);
+                break;
                 
             default:
                 System.out.println("ERROR");
@@ -335,8 +342,8 @@ public class Navigator {
     public void generateRandomGoals(int n, int[] frameSize) {
         int minx = 0; int miny = 0;
         int maxx = getSize()[0]; int maxy = getSize()[1];
-        if (maxx == 0 || maxy == 0) {
-            maxx = frameSize[0]; maxy = frameSize[0];
+        if (maxx <= 0 || maxy <= 0) {
+            maxx = frameSize[0]; maxy = frameSize[1];
         }
         
         goals.clear();

@@ -98,8 +98,6 @@ public class HeuristicSearch extends PathSearch {
         this.path = path;
         this.cost = totalCost;
         
-        System.out.println("path cost: " + this.cost);
-        
         return path;
     }
     

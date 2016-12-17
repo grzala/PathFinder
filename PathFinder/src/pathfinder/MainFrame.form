@@ -194,12 +194,13 @@
             <Component class="javax.swing.JComboBox" name="graphAlgorithmChooser">
               <Properties>
                 <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-                  <StringArray count="5">
+                  <StringArray count="6">
                     <StringItem index="0" value="Closest Neighbour"/>
                     <StringItem index="1" value="Brute Force"/>
-                    <StringItem index="2" value="MST Kruskal"/>
-                    <StringItem index="3" value="MST Prim"/>
-                    <StringItem index="4" value="None"/>
+                    <StringItem index="2" value="Greedy"/>
+                    <StringItem index="3" value="MST Kruskal"/>
+                    <StringItem index="4" value="MST Prim"/>
+                    <StringItem index="5" value="None"/>
                   </StringArray>
                 </Property>
                 <Property name="focusable" type="boolean" value="false"/>
