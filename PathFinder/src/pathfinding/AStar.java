@@ -29,14 +29,14 @@ public class AStar extends PathSearch {
     
     @Override
     public ArrayList<Point> performSearch() {
-        ArrayList<Point> path = new ArrayList<>();
+        ArrayList<Point> path = new ArrayList<Point>();
         Comparator<PrioritisedPoint> comparator = new PPComparator();
         PriorityQueue<PrioritisedPoint> head = new PriorityQueue(16, comparator);
         
         head.add(new PrioritisedPoint(start, 0));
         
-        HashMap<Point, Point> cameFrom = new HashMap<>();
-        HashMap<Point, Float> costSoFar = new HashMap<>();
+        HashMap<Point, Point> cameFrom = new HashMap<Point, Point>();
+        HashMap<Point, Float> costSoFar = new HashMap<Point, Float>();
         
         cameFrom.put(start, null);
         costSoFar.put(start, 0.0f);
@@ -87,7 +87,7 @@ public class AStar extends PathSearch {
             p = cameFrom.get(p);
         }
         
-        ArrayList<Point> reverse = new ArrayList<>();
+        ArrayList<Point> reverse = new ArrayList<Point>();
         for (int i = path.size()-1; i >= 0; i--) {
             reverse.add(path.get(i));
         }

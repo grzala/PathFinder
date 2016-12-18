@@ -18,7 +18,7 @@ public class Order extends Salesman {
     @Override
     public ArrayList<ArrayList<Point>> performSearch() {
         startTimeMeasurement();
-        paths = new ArrayList<>();
+        paths = new ArrayList<ArrayList<Point>>();
         
         for (int i = 0; i < nodes.size()-1; i++) {
             Node n1 = nodes.get(i);

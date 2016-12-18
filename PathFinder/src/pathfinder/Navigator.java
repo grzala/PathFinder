@@ -47,10 +47,10 @@ public class Navigator {
     
     public Navigator() {
         start = new Point();
-        goals = new ArrayList<>();
-        obstacles = new ArrayList<>();
-        additional = new ArrayList<>();
-        paths = new ArrayList<>();
+        goals = new ArrayList<Point>();
+        obstacles = new ArrayList<Point>();
+        additional = new ArrayList<Point>();
+        paths = new ArrayList<ArrayList<Point>>();
         
         start.x = 200; start.y = 200;
         goals.add(new Point(150, 150));
@@ -92,47 +92,35 @@ public class Navigator {
         s = s.replaceAll("\\s+","");
         s = s.toLowerCase();
         
-        switch (s) {
-            case "closestneighbour":
-                setGraphAlgorithm(GraphAlgorithms.CLOSESTNEIGHBOUR);
-                break;
-            case "bruteforce":
-                setGraphAlgorithm(GraphAlgorithms.BRUTEFORCE);
-                break;
-            case "mstkruskal":
-                setGraphAlgorithm(GraphAlgorithms.KRUSKAL);
-                break;
-            case "mstprim":
-                setGraphAlgorithm(GraphAlgorithms.PRIM);
-                break;
-            case "none":
-                setGraphAlgorithm(GraphAlgorithms.NONE);
-                break;
-            case "greedy":
-                setGraphAlgorithm(GraphAlgorithms.GREEDY);
-                break;
-            default:
-                System.out.println("no such algorithm");
-        }
+        if (s.equals("closestneighbour"))
+            setGraphAlgorithm(GraphAlgorithms.CLOSESTNEIGHBOUR);
+        else if (s.equals("bruteforce"))
+            setGraphAlgorithm(GraphAlgorithms.BRUTEFORCE);
+        else if (s.equals("mstkruskal"))
+            setGraphAlgorithm(GraphAlgorithms.KRUSKAL);
+        else if (s.equals("mstprim"))
+            setGraphAlgorithm(GraphAlgorithms.PRIM);
+        else if (s.equals("none"))
+            setGraphAlgorithm(GraphAlgorithms.NONE);
+        else if (s.equals("greedy"))
+            setGraphAlgorithm(GraphAlgorithms.GREEDY);
+        else
+            System.out.println("no such algorithm");
+        
     }
     
     public void setPathAlgorithm(String s) {
         s = s.replaceAll("\\s+","");
         s = s.toLowerCase();
         
-        switch (s) {
-            case "a*":
-                setPathAlgorithm(PathAlgorithms.ASTAR);
-                break;
-            case "dijkstra":
-                setPathAlgorithm(PathAlgorithms.DIJKSTRA);
-                break;
-            case "heuristicsearch":
-                setPathAlgorithm(PathAlgorithms.HEURISTIC);
-                break;
-            default:
-                System.out.println("no such algorithm");
-        }
+        if (s.equals("a*"))
+            setPathAlgorithm(PathAlgorithms.ASTAR);
+        else if (s.equals("dijkstra"))
+            setPathAlgorithm(PathAlgorithms.DIJKSTRA);
+        else if (s.equals("heuristicsearch"))
+            setPathAlgorithm(PathAlgorithms.HEURISTIC);
+        else
+            System.out.println("no such algorithm");
     }
     
     public static float calculateDistance(ArrayList<Point> path) {
@@ -161,10 +149,10 @@ public class Navigator {
     }
     
     public ArrayList<ArrayList<Point>> getLines() {
-        ArrayList<ArrayList<Point>> ls = new ArrayList<>();
+        ArrayList<ArrayList<Point>> ls = new ArrayList<ArrayList<Point>>();
         
         for (ArrayList<Point> path : paths) {
-            ArrayList<Point> ps = new ArrayList<>();
+            ArrayList<Point> ps = new ArrayList<Point>();
             for (Point p : path)
                 ps.add(p);
             ls.add(ps);
@@ -190,7 +178,7 @@ public class Navigator {
             add = (cl.getCell(new Point(x, y)) != null);
         
         //distance from oters
-        ArrayList<Point> points = new ArrayList<>(goals); points.add(start);
+        ArrayList<Point> points = new ArrayList<Point>(goals); points.add(start);
         for (Point g : points) {
             //distance from oters
             float distancesqr = (float)(Math.pow(g.x - x, 2.d) + Math.pow(g.y - y, 2));
@@ -271,11 +259,11 @@ public class Navigator {
     public void setImage(BufferedImage img) {
         if (img == null) {
             this.oc = null;
-            obstacles = new ArrayList<>();
+            obstacles = new ArrayList<Point>();
             cl = null;
         } else {
             this.oc = new OccupancyGrid(img, imgres);
-            obstacles = new ArrayList<>(oc.getAsPoints());
+            obstacles = new ArrayList<Point>(oc.getAsPoints());
             cl = new CellList(obstacles, step, new float[]{0, 0, getSize()[0], getSize()[1]});
             //additional = new ArrayList<>(obstacles); //for debug
             //additional = cl.getCellCenters();

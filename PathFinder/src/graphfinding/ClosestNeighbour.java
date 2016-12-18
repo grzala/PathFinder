@@ -23,10 +23,10 @@ public class ClosestNeighbour extends Salesman {
     @Override
     public ArrayList<ArrayList<Point>> performSearch() {
         startTimeMeasurement();
-        paths = new ArrayList<>();
+        paths = new ArrayList<ArrayList<Point>>();
         
         Salesman.Node currentNode = nodes.get(0); //start from startPoint
-        ArrayList<Salesman.Node> nodesVisited = new ArrayList<>();
+        ArrayList<Salesman.Node> nodesVisited = new ArrayList<Node>();
         nodesVisited.add(currentNode);
         //closest neighbour, rewrite it later
         while (!(nodesVisited.size() >= nodes.size())) {

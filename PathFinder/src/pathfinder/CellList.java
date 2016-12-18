@@ -30,7 +30,7 @@ public class CellList {
         this.minx = size[0]; this.miny = size[1];
         this.maxx = size[2]; this.maxy = size[3];
         
-        list = new HashMap<>();
+        list = new HashMap<Float, ArrayList<Cell>>();
         
         construct();
         
@@ -46,10 +46,10 @@ public class CellList {
         float x = minx;
         float y = miny;
         
-        ArrayList<Cell> cells = new ArrayList<>();
+        ArrayList<Cell> cells = new ArrayList<Cell>();
         
         while (y + cellsize < maxy) {
-            list.put(y, new ArrayList<>());
+            list.put(y, new ArrayList<Cell>());
             while (x + cellsize < maxx) {
                 Cell cell = new Cell(x, y, cellsize);
                 cells.add(cell);
@@ -73,7 +73,7 @@ public class CellList {
                 list.get(c.y).add(c);
         }
         
-        sortedKeys = new ArrayList<>(list.keySet());
+        sortedKeys = new ArrayList<Float>(list.keySet());
         Collections.sort(sortedKeys);
         
         buildNeighbourGrid();
@@ -88,7 +88,7 @@ public class CellList {
     }
     
     public ArrayList<Point> getCellCenters() {
-        ArrayList<Point> toret = new ArrayList<>();
+        ArrayList<Point> toret = new ArrayList<Point>();
         for (float key : sortedKeys) {
             for (Cell c : list.get(key)) {
                 toret.add(new Point((int)(c.x + cellsize/2), (int)(c.y + cellsize/2)));
@@ -121,7 +121,7 @@ public class CellList {
     }
     
     public ArrayList<Point> findNeighbouringCellCenters(Cell cell) {
-        ArrayList<Point> toret = new ArrayList<>();
+        ArrayList<Point> toret = new ArrayList<Point>();
         for (Cell c : findNeighbours(cell)) {
             toret.add(c.getCenter());
         }
@@ -137,7 +137,7 @@ public class CellList {
     }
     
     public ArrayList<Point> getNeighbouringCellCenters(Point p) {
-        ArrayList<Point> toret = new ArrayList<>();
+        ArrayList<Point> toret = new ArrayList<Point>();
         for (Cell c : getNeighbours(p)) {
             toret.add(c.getCenter());
         }
@@ -149,12 +149,12 @@ public class CellList {
     }
     
     public ArrayList<Cell> findNeighbours(Cell c) {
-        ArrayList<Cell> toret = new ArrayList<>();
+        ArrayList<Cell> toret = new ArrayList<Cell>();
         
         float key = findKey(c.y);
         if (key < 0) return toret; //no neighbours
         
-        ArrayList<Cell> toSearch = new ArrayList<>();
+        ArrayList<Cell> toSearch = new ArrayList<Cell>();
         toSearch.addAll(list.get(key));
         if (key > sortedKeys.get(0)) toSearch.addAll(list.get(key-cellsize));
         if (key < sortedKeys.get(sortedKeys.size()-1)) toSearch.addAll(list.get(key+cellsize));

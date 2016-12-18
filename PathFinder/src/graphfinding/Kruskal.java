@@ -26,11 +26,11 @@ public class Kruskal extends Salesman {
     @Override
     public ArrayList<ArrayList<Point>> performSearch() {
         startTimeMeasurement();
-        paths = new ArrayList<>();
-        ArrayList<Salesman.Node> Q = new ArrayList<>(nodes);
+        paths = new ArrayList<ArrayList<Point>>();
+        ArrayList<Salesman.Node> Q = new ArrayList<Node>(nodes);
         
         //find all paths O(n^2)
-        HashMap<Float, ArrayList<Salesman.Node[]>> graph = new HashMap<>();
+        HashMap<Float, ArrayList<Salesman.Node[]>> graph = new HashMap<Float, ArrayList<Node[]>>();
         for (Node n1 : Q) {
             for (Node n2 : Q) {
                 if (n1 == n2) continue; //not for the same ones
@@ -62,8 +62,8 @@ public class Kruskal extends Salesman {
             }
         }
         
-        ArrayList<Node []> nodes = new ArrayList<>(); //build sequence
-        ArrayList<Float> sortedKeys = new ArrayList<>(graph.keySet()); Collections.sort(sortedKeys);
+        ArrayList<Node[]> nodes = new ArrayList<Node[]>(); //build sequence
+        ArrayList<Float> sortedKeys = new ArrayList<Float>(graph.keySet()); Collections.sort(sortedKeys);
         Random rand = new Random();
         for (Float f : sortedKeys) { //from smallest
             while (graph.get(f).size() > 0) {
@@ -73,7 +73,7 @@ public class Kruskal extends Salesman {
             }
         }
         
-        DisjointSet<Node> ds = new DisjointSet<>();
+        DisjointSet<Node> ds = new DisjointSet<Node>();
         ds.makeSet(Q);
         
         for (Node [] narr : nodes) {
@@ -91,7 +91,7 @@ public class Kruskal extends Salesman {
         ArrayList<HashSet<T>> sets;
         
         public void makeSet(ArrayList<T> ar) {
-            sets = new ArrayList<>();
+            sets = new ArrayList<HashSet<T>>();
             for (T t : ar) {
                 HashSet<T> n = new HashSet<T>();
                 n.add(t);

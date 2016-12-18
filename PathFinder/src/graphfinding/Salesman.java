@@ -37,10 +37,10 @@ public abstract class Salesman {
         this.obstacles = obstacles;
         this.clist = clist;
         this.step = step;
-        nodes = new ArrayList<>();
-        paths = new ArrayList<>();
+        nodes = new ArrayList<Node>();
+        paths = new ArrayList<ArrayList<Point>>();
         searchTime = 0;
-        pathTimes = new ArrayList<>();
+        pathTimes = new ArrayList<Double>();
         
         
         initDiagram();
@@ -89,9 +89,9 @@ public abstract class Salesman {
         
         public Node(Point pos) {
             node = pos;
-            distances = new HashMap<>();
-            paths = new HashMap<>();
-            neighbours = new ArrayList<>();
+            distances = new HashMap<Node, Float>();
+            paths = new HashMap<Node, ArrayList<Point>>();
+            neighbours = new ArrayList<Node>();
         }
         
         public Point getNode() {

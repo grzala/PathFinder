@@ -24,7 +24,7 @@ public class Greedy extends Salesman {
     @Override
     public ArrayList<ArrayList<Point>> performSearch() {
         startTimeMeasurement();
-        ArrayList<Salesman.Node> Q = new ArrayList<>(nodes);
+        ArrayList<Salesman.Node> Q = new ArrayList<Node>(nodes);
         
         Node startNode = null;
         for (Node n : Q) 
@@ -32,9 +32,9 @@ public class Greedy extends Salesman {
                 startNode = n;
         
         int N = Q.size() - 1;
-        HashMap<Node, Integer> degree = new HashMap<>();
-        ArrayList<Node[]> edges = new ArrayList<>();
-        HashMap<Node[], Float> weights = new HashMap<>();
+        HashMap<Node, Integer> degree = new HashMap<Node, Integer>();
+        ArrayList<Node[]> edges = new ArrayList<Node[]>();
+        HashMap<Node[], Float> weights = new HashMap<Node[], Float>();
         
         //find all paths O(n^2)
         for (Node n1 : Q) {
@@ -55,7 +55,7 @@ public class Greedy extends Salesman {
         }
         
         //remove parallel
-        ArrayList<Node[]> temp = new ArrayList<>();
+        ArrayList<Node[]> temp = new ArrayList<Node[]>();
         for (Node[] nn1 : edges) {
             boolean add = true;
             for (Node[] nn2 : temp) 
@@ -67,7 +67,7 @@ public class Greedy extends Salesman {
         edges = temp;
         
         //add from start
-        ArrayList<Node[]> construction = new ArrayList<>();
+        ArrayList<Node[]> construction = new ArrayList<Node[]>();
         degree.put(startNode, 1);
         for (Node[] nn : edges) {
             if (nn[0] == startNode || nn[1] == startNode) {
@@ -97,7 +97,7 @@ public class Greedy extends Salesman {
         }
         
         //construct path from construction, in order from start to end
-        ArrayList<Node> buffer = new ArrayList<>();
+        ArrayList<Node> buffer = new ArrayList<Node>();
         Node currentNode = startNode;
         Node nextNode = findNext(construction, currentNode, buffer);
         while (nextNode != null) {
@@ -134,7 +134,7 @@ public class Greedy extends Salesman {
         
         boolean ret = false;
         
-        ArrayList<Node> buffer = new ArrayList<>(); //visitedPoints;
+        ArrayList<Node> buffer = new ArrayList<Node>(); //visitedPoints;
         Node currentNode = item[0];
         
         while(currentNode != null) {

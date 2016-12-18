@@ -105,10 +105,10 @@ public class MainFrame extends javax.swing.JFrame {
         controlPanel = new javax.swing.JPanel();
         choicePanel = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        pathAlgorithmChooser = new javax.swing.JComboBox<>();
+        pathAlgorithmChooser = new javax.swing.JComboBox<String>();
         filler3 = new javax.swing.Box.Filler(new java.awt.Dimension(10, 0), new java.awt.Dimension(10, 0), new java.awt.Dimension(10, 32767));
         jLabel2 = new javax.swing.JLabel();
-        graphAlgorithmChooser = new javax.swing.JComboBox<>();
+        graphAlgorithmChooser = new javax.swing.JComboBox<String>();
         buttonPanel = new javax.swing.JPanel();
         panButton = new javax.swing.JToggleButton();
         setStartButton = new javax.swing.JToggleButton();
@@ -142,14 +142,19 @@ public class MainFrame extends javax.swing.JFrame {
         jLabel1.setText("Pathfinding Algorithm");
         choicePanel.add(jLabel1);
 
-        pathAlgorithmChooser.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "A*", "Dijkstra", "Heuristic search" }));
+        pathAlgorithmChooser.setModel(new javax.swing.DefaultComboBoxModel<String>(new String[] { "A*", "Dijkstra", "Heuristic search" }));
+        pathAlgorithmChooser.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                pathAlgorithmChooserActionPerformed(evt);
+            }
+        });
         choicePanel.add(pathAlgorithmChooser);
         choicePanel.add(filler3);
 
         jLabel2.setText("Graph search algorithm");
         choicePanel.add(jLabel2);
 
-        graphAlgorithmChooser.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Closest Neighbour", "Brute Force", "Greedy", "MST Kruskal", "MST Prim", "None" }));
+        graphAlgorithmChooser.setModel(new javax.swing.DefaultComboBoxModel<String>(new String[] { "Closest Neighbour", "Brute Force", "Greedy", "MST Kruskal", "MST Prim", "None" }));
         graphAlgorithmChooser.setToolTipText("Never use Brute Force with more than 10 goals!");
         graphAlgorithmChooser.setFocusable(false);
         choicePanel.add(graphAlgorithmChooser);
@@ -196,13 +201,11 @@ public class MainFrame extends javax.swing.JFrame {
 
         canvasPanel.setLayout(new javax.swing.BoxLayout(canvasPanel, javax.swing.BoxLayout.LINE_AXIS));
 
-        canvas.setPreferredSize(new java.awt.Dimension(640, 450));
-
         javax.swing.GroupLayout canvasLayout = new javax.swing.GroupLayout(canvas);
         canvas.setLayout(canvasLayout);
         canvasLayout.setHorizontalGroup(
             canvasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGap(0, 640, Short.MAX_VALUE)
         );
         canvasLayout.setVerticalGroup(
             canvasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -254,6 +257,10 @@ public class MainFrame extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void pathAlgorithmChooserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pathAlgorithmChooserActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_pathAlgorithmChooserActionPerformed
 
     public void createAndShowGUI() {
         setVisible(true);

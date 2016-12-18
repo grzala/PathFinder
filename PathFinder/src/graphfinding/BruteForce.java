@@ -26,7 +26,7 @@ public class BruteForce extends Salesman {
     @Override
     public ArrayList<ArrayList<Point>> performSearch() {
         startTimeMeasurement();
-        ArrayList<Node> Q = new ArrayList<>(nodes);
+        ArrayList<Node> Q = new ArrayList<Node>(nodes);
         
         //find all paths O(n^2)
         for (Node n1 : Q) {
@@ -45,17 +45,17 @@ public class BruteForce extends Salesman {
         Node start = Q.remove(0); //remove start;
         
         try {
-            ArrayList<List<Node>> perms = new ArrayList<>(listPermutations(Q));
+            ArrayList<List<Node>> perms = new ArrayList<List<Node>>(listPermutations(Q));
             
             //find shortest permutation
             float distance = Float.MAX_VALUE;
-            ArrayList<Node> shortestPath = new ArrayList<>();
+            ArrayList<Node> shortestPath = new ArrayList<Node>();
 
             for (List<Node> path : perms) {
                 path.add(0, start); //start Node
                 float newdist = calculateDistance(path);
                 if (newdist < distance) {
-                    shortestPath = new ArrayList<>(path);
+                    shortestPath = new ArrayList<Node>(path);
                     distance = newdist;
                 }
             }
@@ -76,12 +76,12 @@ public class BruteForce extends Salesman {
     
     private static <T> List<List<T>> listPermutations(List<T> list) {
         if (list.isEmpty()) {
-            List<List<T>> result = new ArrayList<>();
-            result.add(new ArrayList<>());
+            List<List<T>> result = new ArrayList<List<T>>();
+            result.add(new ArrayList<T>());
             return result;
         }
 
-        List<List<T>> returnMe = new ArrayList<>();
+        List<List<T>> returnMe = new ArrayList<List<T>>();
 
         T firstElement = list.remove(0);
 
@@ -89,7 +89,7 @@ public class BruteForce extends Salesman {
         for (List<T> li : recursiveReturn) {
 
             for (int index = 0; index <= li.size(); index++) {
-                List<T> temp = new ArrayList<>(li);
+                List<T> temp = new ArrayList<T>(li);
                 temp.add(index, firstElement);
                 returnMe.add(temp);
             }

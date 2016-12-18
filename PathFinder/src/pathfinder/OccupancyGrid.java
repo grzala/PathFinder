@@ -21,7 +21,7 @@ class OccupancyGrid {
     int width, height;
     
     public OccupancyGrid(BufferedImage img, int resolution) {
-        oc = new ArrayList<>();
+        oc = new ArrayList<Boolean>();
         this.res = resolution;
         originX = 0; originY = 0;
         
@@ -48,7 +48,7 @@ class OccupancyGrid {
     }
     
     public ArrayList<Point> getAsPoints() {
-        ArrayList<Point> toret = new ArrayList<>();
+        ArrayList<Point> toret = new ArrayList<Point>();
         
         int x = 0; int y = 0;
 

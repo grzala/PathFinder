@@ -49,9 +49,9 @@ public class Canvas extends javax.swing.JPanel {
         setIgnoreRepaint(true);
         background = null;
         
-        lines = new ArrayList<>();
-        goals = new ArrayList<>();
-        additional = new ArrayList<>();
+        lines = new ArrayList<ArrayList<Point>>();
+        goals = new ArrayList<Point>();
+        additional = new ArrayList<Point>();
         start = new Point();
         boardSize = new int[2];
         times = new double[2];
@@ -210,9 +210,6 @@ public class Canvas extends javax.swing.JPanel {
 
     private void formMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMouseExited
         setCursor(Cursor.getDefaultCursor());
-    }//GEN-LAST:event_formMouseExited
-
-
-    // Variables declaration - do not modify//GEN-BEGIN:variables
-    // End of variables declaration//GEN-END:variables
+    }
+    
 }

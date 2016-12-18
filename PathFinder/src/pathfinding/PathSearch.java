@@ -42,7 +42,7 @@ public abstract class PathSearch {
         this.obstacles = obstacles;
         this.clist = clist;
         this.cellsize = cellsize;  
-        path = new ArrayList<>();
+        path = new ArrayList<Point>();
         cost = Float.MAX_VALUE;
         
         staticNeighbours = !(clist == null); //if cl is null, use dynamically created grid
@@ -71,7 +71,7 @@ public abstract class PathSearch {
     }
     
     protected ArrayList<Point> getDynamicNext(Point current) {
-        ArrayList<Point> toret = new ArrayList<>();
+        ArrayList<Point> toret = new ArrayList<Point>();
         
         Point W = new Point(current.x - cellsize, current.y);
         Point E = new Point(current.x + cellsize, current.y);

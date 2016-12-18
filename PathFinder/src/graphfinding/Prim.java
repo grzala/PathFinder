@@ -24,8 +24,8 @@ public class Prim extends Salesman {
     @Override
     public ArrayList<ArrayList<Point>> performSearch() {
         startTimeMeasurement();
-        paths = new ArrayList<>();
-        ArrayList<Salesman.Node> Q = new ArrayList<>(nodes);
+        paths = new ArrayList<ArrayList<Point>>();
+        ArrayList<Salesman.Node> Q = new ArrayList<Node>(nodes);
         
         //find all paths O(n^2)
         for (Node n1 : Q) {
@@ -44,9 +44,9 @@ public class Prim extends Salesman {
         int i = rand.nextInt(Q.size());
         Node startNode = Q.get(i);
         
-        HashMap <Node, Node> cameFrom = new HashMap<>();
-        HashMap <Node, Float> priority = new HashMap<>();
-        ArrayList <Node> queue = new ArrayList<>();
+        HashMap <Node, Node> cameFrom = new HashMap<Node, Node>();
+        HashMap <Node, Float> priority = new HashMap<Node, Float>();
+        ArrayList<Node> queue = new ArrayList<Node>();
         
         for (Node n : Q) {
             priority.put(n, Float.MAX_VALUE);
