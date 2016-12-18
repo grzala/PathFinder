@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.PriorityQueue;
+import pathfinder.CellList;
 
 /**
  *
@@ -18,8 +19,8 @@ import java.util.PriorityQueue;
  */
 public class HeuristicSearch extends PathSearch {
     
-    public HeuristicSearch(Point start, Point goal, ArrayList<Point> obstacles, int cellsize) {
-        super(start, goal, obstacles, cellsize);
+    public HeuristicSearch(Point start, Point goal, ArrayList<Point> obstacles, CellList clist, int cellsize) {
+        super(start, goal, obstacles, clist, cellsize);
     }
     
     public HeuristicSearch() {
@@ -40,7 +41,7 @@ public class HeuristicSearch extends PathSearch {
         cameFrom.put(start, null);
         costToGoal.put(start, 0.0f);
         
-        Rectangle goalRect = new Rectangle(goal.x - cellsize/2, goal.y - cellsize/2, cellsize, cellsize);
+        Rectangle goalRect = getRect(goal, cellsize);
         try {
             while (head.size() > 0) {
                 Point current = head.poll().toPoint();
@@ -49,7 +50,7 @@ public class HeuristicSearch extends PathSearch {
                     if (current != goal) {
                         current = cameFrom.get(current); //the current one is might make path longer
                         cameFrom.put(goal, current);
-                        float newCost = costToGoal.get(current) + heur(goal, current);
+                        float newCost = heur(goal, current);
                         costToGoal.put(goal, newCost);
 
                     }

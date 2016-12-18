@@ -11,6 +11,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Random;
+import pathfinder.CellList;
 import pathfinding.PathSearch;
 
 /**
@@ -18,8 +19,8 @@ import pathfinding.PathSearch;
  * @author Grzala
  */
 public class Kruskal extends Salesman {
-     public Kruskal(PathSearch ps, Point start, ArrayList<Point> goals, ArrayList<Point> obstacles, float step) {
-        super(ps, start, goals, obstacles, step);
+     public Kruskal(PathSearch ps, Point start, ArrayList<Point> goals, ArrayList<Point> obstacles, CellList clist, float step) {
+        super(ps, start, goals, obstacles, clist, step);
     }
     
     @Override
@@ -36,7 +37,7 @@ public class Kruskal extends Salesman {
                 
                 //path search
                 double t = System.nanoTime(); //search time
-                ps.reset(n1.getNode(), n2.getNode(), obstacles, (int)step);
+                ps.reset(n1.getNode(), n2.getNode(), obstacles, clist, (int)step);
                 ps.performSearch();
                 n1.addEdge(n2, ps.getPath(), ps.getCost());
                 pathTimes.add(System.nanoTime() - t);

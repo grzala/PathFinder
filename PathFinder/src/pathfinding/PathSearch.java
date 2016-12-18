@@ -9,6 +9,7 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.Comparator;
+import pathfinder.CellList;
 
 /**
  *
@@ -20,25 +21,31 @@ public abstract class PathSearch {
     
     protected ArrayList<Point> obstacles;
     protected ArrayList<Point> path;
+    protected CellList clist;
     protected float cost;
     
     protected int cellsize;
     
-    public PathSearch(Point start, Point goal, ArrayList<Point> obstacles, int cellsize) {
-        reset(start, goal, obstacles, cellsize);
+    protected boolean staticNeighbours;
+    
+    public PathSearch(Point start, Point goal, ArrayList<Point> obstacles, CellList clist, int cellsize) {
+        reset(start, goal, obstacles, clist, cellsize);
     }
     
     public PathSearch() {
-        
+        staticNeighbours = false;
     }
     
-    public final void reset(Point start, Point goal, ArrayList<Point> obstacles, int cellsize) {
+    public final void reset(Point start, Point goal, ArrayList<Point> obstacles, CellList clist, int cellsize) {
         this.start = start;
         this.goal = goal;
         this.obstacles = obstacles;
+        this.clist = clist;
         this.cellsize = cellsize;  
         path = new ArrayList<>();
         cost = Float.MAX_VALUE;
+        
+        staticNeighbours = !(clist == null); //if cl is null, use dynamically created grid
     }
     
     public ArrayList<Point> getPath() {
@@ -52,6 +59,18 @@ public abstract class PathSearch {
     public abstract ArrayList<Point> performSearch();
     
     protected ArrayList<Point> getNext(Point current) {
+        if (staticNeighbours) {
+            return getStaticNext(current);
+        } else {
+            return getDynamicNext(current);
+        }
+    }
+    
+    protected ArrayList<Point> getStaticNext(Point current) {
+        return clist.getNeighbouringCellCenters(current);
+    }
+    
+    protected ArrayList<Point> getDynamicNext(Point current) {
         ArrayList<Point> toret = new ArrayList<>();
         
         Point W = new Point(current.x - cellsize, current.y);
@@ -104,8 +123,9 @@ public abstract class PathSearch {
         return toret;
     }
     
-    private Rectangle getRect(Point center, int size) { // just INT, make own rect
-        return new Rectangle(center.x - size/2, center.y - size/2, size, size);
+    protected Rectangle getRect(Point center, int size) { // just INT, make own rect
+        int nsize = size+1; //prevent on boundaries exception
+        return new Rectangle(center.x - nsize/2, center.y - nsize/2, nsize, nsize);
     }
     
     protected class PrioritisedPoint {

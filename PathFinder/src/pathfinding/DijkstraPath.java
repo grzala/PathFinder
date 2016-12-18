@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.PriorityQueue;
+import pathfinder.CellList;
 
 /**
  *
@@ -18,8 +19,8 @@ import java.util.PriorityQueue;
  */
 public class DijkstraPath extends PathSearch {
     
-    public DijkstraPath(Point start, Point goal, ArrayList<Point> obstacles, int cellsize) {
-        super(start, goal, obstacles, cellsize);
+    public DijkstraPath(Point start, Point goal, ArrayList<Point> obstacles,CellList clist, int cellsize) {
+        super(start, goal, obstacles, clist, cellsize);
     }
     
     public DijkstraPath() {
@@ -39,14 +40,16 @@ public class DijkstraPath extends PathSearch {
         cameFrom.put(start, null);
         costSoFar.put(start, 0.0f);
         
-        Rectangle goalRect = new Rectangle(goal.x - cellsize/2, goal.y - cellsize/2, cellsize, cellsize);
+        Rectangle goalRect = getRect(goal, cellsize);
         while (head.size() > 0) {
             
             Point current = head.poll().toPoint();
             
             if (goalRect.contains(current)) {//goal reached
                 if (current != goal) {
+                    float c = costSoFar.get(current);
                     current = cameFrom.get(current); //the current one is might make path longer
+                    costSoFar.put(current, c);
                     cameFrom.put(goal, current);
                     float newCost = costSoFar.get(current) + heur(current, goal);
                     costSoFar.put(goal, newCost);

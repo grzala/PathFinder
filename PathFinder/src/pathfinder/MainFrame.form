@@ -203,6 +203,7 @@
                     <StringItem index="5" value="None"/>
                   </StringArray>
                 </Property>
+                <Property name="toolTipText" type="java.lang.String" value="Never use Brute Force with more than 10 goals!"/>
                 <Property name="focusable" type="boolean" value="false"/>
               </Properties>
               <AuxValues>

@@ -9,6 +9,7 @@ import pathfinding.PathSearch;
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.HashMap;
+import pathfinder.CellList;
 
 /**
  *
@@ -18,6 +19,7 @@ public abstract class Salesman {
     protected Point start;
     protected ArrayList<Point> goals;
     protected ArrayList<Point> obstacles;
+    protected CellList clist;
     protected float step;
     
     protected ArrayList<Node> nodes;
@@ -28,16 +30,18 @@ public abstract class Salesman {
     
     protected PathSearch ps;
     
-    public Salesman(PathSearch ps, Point start, ArrayList<Point> goals, ArrayList<Point> obstacles, float step) {
+    public Salesman(PathSearch ps, Point start, ArrayList<Point> goals, ArrayList<Point> obstacles, CellList clist, float step) {
         this.ps = ps;
         this.start = start;
         this.goals = goals;
         this.obstacles = obstacles;
+        this.clist = clist;
         this.step = step;
         nodes = new ArrayList<>();
         paths = new ArrayList<>();
         searchTime = 0;
         pathTimes = new ArrayList<>();
+        
         
         initDiagram();
     }

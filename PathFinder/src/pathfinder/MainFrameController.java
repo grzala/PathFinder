@@ -153,8 +153,11 @@ public class MainFrameController {
                     FileNameExtensionFilter filter = new FileNameExtensionFilter("JPG & PNG Images", "jpg", "png");
                     chooser.setFileFilter(filter);
                     int returnVal = chooser.showOpenDialog(null);
-                    if(returnVal == JFileChooser.APPROVE_OPTION) 
+                    if(returnVal == JFileChooser.APPROVE_OPTION)  {
                         img = ImageIO.read(chooser.getSelectedFile());
+                    } else {
+                        return; //no changes
+                    }
                 } else if (source == frame.noMapMenuItem) {
                    img = null;
                 }

@@ -8,6 +8,7 @@ package graphfinding;
 import pathfinding.PathSearch;
 import java.awt.Point;
 import java.util.ArrayList;
+import pathfinder.CellList;
 
 /**
  *
@@ -15,8 +16,8 @@ import java.util.ArrayList;
  */
 public class ClosestNeighbour extends Salesman {
     
-    public ClosestNeighbour(PathSearch ps, Point start, ArrayList<Point> goals, ArrayList<Point> obstacles, float step) {
-        super(ps, start, goals, obstacles, step);
+    public ClosestNeighbour(PathSearch ps, Point start, ArrayList<Point> goals, ArrayList<Point> obstacles, CellList clist, float step) {
+        super(ps, start, goals, obstacles, clist, step);
     }
     
     @Override
@@ -33,7 +34,7 @@ public class ClosestNeighbour extends Salesman {
             for (Salesman.Node n : nodes) {
                 if (!(currentNode.equals(n)) && !(nodesVisited.contains(n))) {
                     double t = System.nanoTime(); //search time
-                    ps.reset(currentNode.getNode(), n.getNode(), obstacles, (int)step);
+                    ps.reset(currentNode.getNode(), n.getNode(), obstacles, clist, (int)step);
                     ps.performSearch();
                     currentNode.addEdge(n, ps.getPath(), ps.getCost());
                     pathTimes.add(System.nanoTime() - t);
@@ -41,6 +42,7 @@ public class ClosestNeighbour extends Salesman {
             }
             
             Salesman.Node newNode = currentNode.getClosestNeighbour();
+            if (newNode == null) break;
             ArrayList<Point> p = currentNode.getPathFor(newNode);
             if (p != null && p.size() > 0) //if path exists
                 paths.add(currentNode.getPathFor(newNode));

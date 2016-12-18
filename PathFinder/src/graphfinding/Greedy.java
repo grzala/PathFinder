@@ -9,6 +9,7 @@ import pathfinding.PathSearch;
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.HashMap;
+import pathfinder.CellList;
 
 /**
  *
@@ -16,8 +17,8 @@ import java.util.HashMap;
  */
 public class Greedy extends Salesman {
     
-    public Greedy(PathSearch ps, Point start, ArrayList<Point> goals, ArrayList<Point> obstacles, float step) {
-        super(ps, start, goals, obstacles, step);
+    public Greedy(PathSearch ps, Point start, ArrayList<Point> goals, ArrayList<Point> obstacles, CellList clist, float step) {
+        super(ps, start, goals, obstacles, clist, step);
     }
     
     @Override
@@ -41,7 +42,7 @@ public class Greedy extends Salesman {
             for (Node n2 : Q) {
                 if (n1 != n2) {
                     double t = System.nanoTime(); //search time
-                    ps.reset(n1.getNode(), n2.getNode(), obstacles, (int)step);
+                    ps.reset(n1.getNode(), n2.getNode(), obstacles, clist, (int)step);
                     ps.performSearch();
                     n1.addEdge(n2, ps.getPath(), ps.getCost());
                     pathTimes.add(System.nanoTime() - t);

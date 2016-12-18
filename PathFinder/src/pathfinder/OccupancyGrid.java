@@ -7,10 +7,7 @@ package pathfinder;
 
 import java.awt.Point;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
-import javax.imageio.ImageIO;
 
 /**
  *
@@ -18,7 +15,7 @@ import javax.imageio.ImageIO;
  */
 class OccupancyGrid {
     
-    private ArrayList<Boolean> oc;
+    private final ArrayList<Boolean> oc;
     int res;
     int originX, originY;
     int width, height;
@@ -80,5 +77,6 @@ class OccupancyGrid {
         
         return toret;
     }
+
     
 }

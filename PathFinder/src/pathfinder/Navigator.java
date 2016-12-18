@@ -16,7 +16,6 @@ import pathfinding.PathSearch;
 import pathfinding.DijkstraPath;
 import pathfinding.AStar;
 import java.awt.Point;
-import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Random;
@@ -30,6 +29,7 @@ import pathfinding.HeuristicSearch;
 public class Navigator {
     
     private OccupancyGrid oc;
+    private CellList cl;
     
     private Point start;
     private ArrayList<Point> goals;
@@ -177,9 +177,24 @@ public class Navigator {
         boolean add = true;
         
         //on obstacle?
+        /* deprecated
         for (Point o : obstacles) {
             Rectangle rect = new Rectangle(x - (int)step/2, y - (int)step/2, (int)step, (int)step);
             if (rect.contains(o)) {
+                add = false;
+                break;
+            }
+        }
+        */
+        if (cl != null) 
+            add = (cl.getCell(new Point(x, y)) != null);
+        
+        //distance from oters
+        ArrayList<Point> points = new ArrayList<>(goals); points.add(start);
+        for (Point g : points) {
+            //distance from oters
+            float distancesqr = (float)(Math.pow(g.x - x, 2.d) + Math.pow(g.y - y, 2));
+            if (Math.sqrt(distancesqr) < 10) {
                 add = false;
                 break;
             }
@@ -203,7 +218,6 @@ public class Navigator {
             start = new Point(x, y);
             return true;
         } else { 
-            System.out.println("can't add start, to close to obstacle");
             return false;
         }
     }    
@@ -258,21 +272,25 @@ public class Navigator {
         if (img == null) {
             this.oc = null;
             obstacles = new ArrayList<>();
+            cl = null;
         } else {
             this.oc = new OccupancyGrid(img, imgres);
             obstacles = new ArrayList<>(oc.getAsPoints());
+            cl = new CellList(obstacles, step, new float[]{0, 0, getSize()[0], getSize()[1]});
             //additional = new ArrayList<>(obstacles); //for debug
+            //additional = cl.getCellCenters();
         }
         
-        while (!canAdd(start.x, start.y)) {
+        int x = start.x; int y = start.y;
+        start = new Point(-100, -100);
+        while (!canAdd(x, y)) {
             int minx = 0; int miny = 0;
             int maxx = getSize()[0]; int maxy = getSize()[1];
             Random r = new Random();
-            int x = r.nextInt((maxx - minx) + 1) + minx;
-            int y = r.nextInt((maxy - miny) + 1) + miny;
-            
-            start = new Point(x, y);
+            x = r.nextInt((maxx - minx) + 1) + minx;
+            y = r.nextInt((maxy - miny) + 1) + miny;
         }
+        start = new Point(x, y);
     }
   
     public void performSearch() {
@@ -299,27 +317,27 @@ public class Navigator {
         Salesman s = null;
         switch (graphAlgorithm) {
             case CLOSESTNEIGHBOUR:
-                s = new ClosestNeighbour(ps, start, goals, obstacles, step);
+                s = new ClosestNeighbour(ps, start, goals, obstacles, cl, step);
                 break;
                 
             case BRUTEFORCE:
-                s = new BruteForce(ps, start, goals, obstacles, step);
+                s = new BruteForce(ps, start, goals, obstacles, cl, step);
                 break;
                 
             case KRUSKAL:
-                s = new Kruskal(ps, start, goals, obstacles, step);
+                s = new Kruskal(ps, start, goals, obstacles, cl, step);
                 break;
                 
             case PRIM:
-                s = new Prim(ps, start, goals, obstacles, step);
+                s = new Prim(ps, start, goals, obstacles, cl, step);
                 break;
                 
             case NONE:
-                s = new Order(ps, start, goals, obstacles, step);
+                s = new Order(ps, start, goals, obstacles, cl, step);
                 break;
             
             case GREEDY:
-                s = new Greedy(ps, start, goals, obstacles, step);
+                s = new Greedy(ps, start, goals, obstacles, cl, step);
                 break;
                 
             default:
@@ -328,6 +346,9 @@ public class Navigator {
         }
         
         paths = s.performSearch();
+        //AStar a = new AStar(start, goals.get(0), obstacles, cl, (int)step);
+        //a.performSearch();
+        //paths.add(a.getPath());
         graphTime = s.getTime()[0]; avgPathTime = s.getTime()[1];
     }
     

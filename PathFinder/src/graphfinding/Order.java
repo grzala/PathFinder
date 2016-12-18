@@ -7,11 +7,12 @@ package graphfinding;
 
 import java.awt.Point;
 import java.util.ArrayList;
+import pathfinder.CellList;
 import pathfinding.PathSearch;
 
 public class Order extends Salesman {
-     public Order(PathSearch ps, Point start, ArrayList<Point> goals, ArrayList<Point> obstacles, float step) {
-        super(ps, start, goals, obstacles, step);
+     public Order(PathSearch ps, Point start, ArrayList<Point> goals, ArrayList<Point> obstacles, CellList clist, float step) {
+        super(ps, start, goals, obstacles, clist, step);
     }
     
     @Override
@@ -24,7 +25,7 @@ public class Order extends Salesman {
             Node n2 = nodes.get(i + 1);
             
             double t = System.nanoTime(); //search time
-            ps.reset(n1.getNode(), n2.getNode(), obstacles, (int)step);
+            ps.reset(n1.getNode(), n2.getNode(), obstacles, clist, (int)step);
             ps.performSearch();
             paths.add(ps.getPath());
             pathTimes.add(System.nanoTime() - t);
